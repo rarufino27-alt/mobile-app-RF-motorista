@@ -14,15 +14,16 @@
 }
 
 body{
-  background:#fff;
+  background:#000;
+  color:#fff;
+  height:100vh;
   overflow:hidden;
 }
 
-/* ===== HEADER ===== */
+/* ================= HEADER ================= */
 
 .header{
-  background:#facc15;
-  height:90px;
+  height:70px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -30,230 +31,300 @@ body{
   position:relative;
 }
 
-.menu-btn{
-  font-size:1.5rem;
-  cursor:pointer;
-}
-
-.logo{
-  font-weight:900;
-  font-size:1.2rem;
-  color:#fff;
-  letter-spacing:1px;
-}
-
-.valor-dia{
-  position:absolute;
-  bottom:-20px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#000;
-  color:#fff;
-  padding:8px 20px;
+.toggle{
+  width:120px;
+  height:35px;
+  background:#222;
   border-radius:30px;
-  font-weight:700;
-  font-size:.9rem;
+  position:relative;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  padding:5px;
 }
 
-/* ===== MAPA ESTÁTICO ===== */
-
-.mapa{
+.toggle span{
   position:absolute;
-  top:90px;
-  bottom:120px;
+  width:50%;
+  text-align:center;
+  font-size:.8rem;
+  font-weight:700;
+}
+
+.toggle .offline-text{
+  left:0;
+  color:#f87171;
+}
+
+.toggle .online-text{
+  right:0;
+  color:#22c55e;
+}
+
+.bola{
+  width:30px;
+  height:30px;
+  background:#f87171;
+  border-radius:50%;
+  transition:.3s;
+}
+
+.toggle.ativo .bola{
+  transform:translateX(85px);
+  background:#22c55e;
+}
+
+/* ================= RADAR ================= */
+
+.radar-container{
+  position:absolute;
+  top:70px;
+  bottom:90px;
   left:0;
   right:0;
-  background:url("https://maps.gstatic.com/tactile/basepage/pegman_sherlock.png") center center no-repeat,
-             linear-gradient(#eaeaea,#f8f8f8);
-  background-size:120px;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:#999;
-  font-weight:600;
+  flex-direction:column;
 }
 
-/* ===== BOTÃO STATUS ===== */
-
-.status-container{
-  position:absolute;
-  bottom:30px;
-  left:50%;
-  transform:translateX(-50%);
-}
-
-.status-btn{
-  padding:15px 50px;
-  border:none;
-  border-radius:40px;
-  font-size:1rem;
-  font-weight:700;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.offline{
-  background:#ddd;
-  color:#000;
-}
-
-.online{
-  background:#22c55e;
-  color:#fff;
-}
-
-/* ===== MENU LATERAL ===== */
-
-.menu{
-  position:fixed;
-  top:0;
-  left:-260px;
-  width:260px;
-  height:100%;
-  background:#fff;
-  box-shadow:2px 0 15px rgba(0,0,0,.15);
-  transition:.3s;
-  z-index:1000;
-  padding:20px;
-}
-
-.menu.ativo{
-  left:0;
-}
-
-.menu-header{
-  text-align:center;
-  margin-bottom:20px;
-}
-
-.menu-header img{
-  width:70px;
-  height:70px;
+.radar{
+  width:220px;
+  height:220px;
   border-radius:50%;
-  object-fit:cover;
-  margin-bottom:10px;
+  border:2px solid rgba(250,204,21,.3);
+  position:relative;
+  animation:rotar 4s linear infinite;
 }
 
-.menu-header h3{
-  font-size:1rem;
+.radar::before,
+.radar::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  border:2px solid rgba(250,204,21,.3);
 }
 
-.menu-header span{
-  font-size:.8rem;
-  color:#777;
+.radar::before{
+  width:150px;
+  height:150px;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
 }
 
-.menu ul{
-  list-style:none;
+.radar::after{
+  width:80px;
+  height:80px;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
 }
 
-.menu ul li{
-  padding:12px 0;
-  border-bottom:1px solid #eee;
-  cursor:pointer;
-  font-size:.95rem;
+@keyframes rotar{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
 }
 
-.menu ul li:hover{
-  color:#facc15;
+.texto-status{
+  margin-top:25px;
+  font-size:1.2rem;
+  font-weight:600;
+  color:#aaa;
 }
 
-/* ===== OVERLAY ===== */
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:70px;
+  background:#111;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  border-top:1px solid #222;
+}
+
+.bottom-nav div{
+  text-align:center;
+  font-size:.75rem;
+  color:#aaa;
+}
+
+/* ================= OVERLAY CORRIDA ================= */
 
 .overlay{
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,.3);
+  inset:0;
+  background:#000;
   display:none;
-  z-index:900;
+  flex-direction:column;
+  z-index:2000;
 }
 
-.overlay.ativo{
-  display:block;
+.mapa-topo{
+  height:40%;
+  background:linear-gradient(#1a1a1a,#000);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#facc15;
+  font-weight:700;
+}
+
+.card{
+  flex:1;
+  background:#111;
+  padding:25px;
+  border-top-left-radius:25px;
+  border-top-right-radius:25px;
+}
+
+.valor{
+  font-size:2rem;
+  font-weight:900;
+  margin-bottom:15px;
+}
+
+.rota div{
+  margin-bottom:10px;
+  font-size:1rem;
+}
+
+.btn{
+  width:100%;
+  padding:15px;
+  margin-top:20px;
+  border:none;
+  border-radius:30px;
+  background:#facc15;
+  color:#000;
+  font-weight:900;
+  font-size:1rem;
+  cursor:pointer;
+}
+
+.contador{
+  text-align:center;
+  margin-top:15px;
+  color:#888;
 }
 </style>
 </head>
+
 <body>
 
 <div class="header">
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
-  <div class="logo">RF DRIVER</div>
-  <div></div>
-  <div class="valor-dia" id="valorDia">R$ 0,00</div>
-</div>
+  <div>☰</div>
 
-<div class="mapa">
-  MAPA (EM BREVE INTEGRAÇÃO REAL)
-</div>
-
-<div class="status-container">
-  <button id="statusBtn" class="status-btn offline" onclick="toggleStatus()">CONECTAR</button>
-</div>
-
-<div class="menu" id="menu">
-  <div class="menu-header">
-    <img src="https://i.pravatar.cc/150?img=3" alt="Foto">
-    <h3>Rafael ⭐ 5.0</h3>
-    <span>Toque para editar perfil</span>
+  <div class="toggle" id="toggleStatus" onclick="alternarStatus()">
+    <div class="bola"></div>
+    <span class="offline-text">Offline</span>
+    <span class="online-text">Online</span>
   </div>
 
-  <ul>
-    <li onclick="irPara('ganhos')">Ganhos</li>
-    <li onclick="irPara('historico')">Histórico de Corridas</li>
-    <li onclick="irPara('carteira')">Carteira</li>
-    <li onclick="irPara('indicar')">Indique um Motorista</li>
-    <li onclick="abrirWhats()">Central de Ajuda</li>
-    <li onclick="irPara('notificacoes')">Notificações</li>
-    <li onclick="irPara('configuracoes')">Configurações</li>
-    <li onclick="logout()">Sair</li>
-  </ul>
+  <div>⚙</div>
 </div>
 
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+<div class="radar-container">
+  <div class="radar"></div>
+  <div class="texto-status" id="textoStatus">
+    Você está offline
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <div>Pedidos</div>
+  <div>Demanda</div>
+  <div>Desempenho</div>
+</div>
+
+<!-- OVERLAY CORRIDA -->
+
+<div class="overlay" id="overlayCorrida">
+  <div class="mapa-topo">
+    1.4 km • 6 min
+  </div>
+
+  <div class="card">
+    <div class="valor">
+      R$ <span id="valorCorrida">30</span>
+    </div>
+
+    <div class="rota">
+      <div><strong>A</strong> Centro do Cabo</div>
+      <div><strong>B</strong> Shopping Costa Dourada</div>
+    </div>
+
+    <button class="btn" onclick="aceitarCorrida()">
+      ACEITAR POR R$ <span id="valorBtn">30</span>
+    </button>
+
+    <div class="contador">
+      Tempo restante: <span id="tempo">15</span>s
+    </div>
+  </div>
+</div>
 
 <script>
 
-function toggleMenu(){
-  document.getElementById("menu").classList.toggle("ativo");
-  document.getElementById("overlay").classList.toggle("ativo");
-}
+let online = false;
+let timer;
+let tempoRestante = 15;
 
-function toggleStatus(){
-  const btn = document.getElementById("statusBtn");
+function alternarStatus(){
+  const toggle = document.getElementById("toggleStatus");
+  online = !online;
 
-  if(btn.classList.contains("offline")){
-    btn.classList.remove("offline");
-    btn.classList.add("online");
-    btn.innerText = "DESCONECTAR";
+  if(online){
+    toggle.classList.add("ativo");
+    document.getElementById("textoStatus").innerText = "Procurando pedidos perto...";
+    setTimeout(simularCorrida, 5000);
   } else {
-    btn.classList.remove("online");
-    btn.classList.add("offline");
-    btn.innerText = "CONECTAR";
+    toggle.classList.remove("ativo");
+    document.getElementById("textoStatus").innerText = "Você está offline";
   }
 }
 
-function abrirWhats(){
-  window.open("https://wa.me/5599999999999","_blank"); // colocar número real do suporte RF
+function simularCorrida(){
+  if(!online) return;
+
+  document.getElementById("overlayCorrida").style.display = "flex";
+  tocarSom();
+  iniciarContador();
 }
 
-function irPara(pagina){
-  alert("Página: " + pagina + " (em construção)");
+function iniciarContador(){
+  tempoRestante = 15;
+  document.getElementById("tempo").innerText = tempoRestante;
+
+  timer = setInterval(()=>{
+    tempoRestante--;
+    document.getElementById("tempo").innerText = tempoRestante;
+
+    if(tempoRestante <= 0){
+      clearInterval(timer);
+      fecharCorrida();
+    }
+  },1000);
 }
 
-function logout(){
-  alert("Sessão encerrada.");
+function fecharCorrida(){
+  document.getElementById("overlayCorrida").style.display = "none";
 }
 
-function atualizarValorDia(){
-  const valor = Number(localStorage.getItem("rf_driver_ganho_dia")) || 0;
-  document.getElementById("valorDia").innerText = 
-    "R$ " + valor.toFixed(2);
+function aceitarCorrida(){
+  clearInterval(timer);
+  alert("Corrida aceita 🚕");
+  fecharCorrida();
 }
 
-atualizarValorDia();
+function tocarSom(){
+  const audio = new Audio("sounds/notificacao.mp3");
+  audio.play();
+}
 
 </script>
 
