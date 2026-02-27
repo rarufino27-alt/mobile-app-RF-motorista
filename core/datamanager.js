@@ -1,83 +1,126 @@
-const DataManager = {
-  rotas: [],
+window.DataManager = {
 
-  arquivos: [
-    "./data/condominio-porto-do-cabo.json",
-    "./data/lote-garapu2-lote-dona-amara.json",
-    "./data/cohab.json",
-    "./data/centro-do-cabo.json",
-    "./data/shopping-costa-dourada.json",
-    "./data/aguia-american-club-br-101.json",
-    "./data/empresas.json",
-    "./data/engenhos.json",
-    "./data/hospitais-clinicas.json",
-    "./data/interurbanas.json",
-    "./data/interestaduais.json",
-    "./data/lazer-festa.json",
-    "./data/locais.json",
-    "./data/longas-locais.json",
-    "./data/praias.json",
-    "./data/bairro-sao-francisco-baixo.json"
-  ],
+  /* =========================
+     CONFIGURAÇÃO GLOBAL
+  ========================== */
 
-  async carregar() {
-    try {
-      const respostas = await Promise.all(
-        this.arquivos.map(a =>
-          fetch(a).then(r => {
-            if (!r.ok) throw new Error("Falha ao carregar " + a);
-            return r.json();
-          })
-        )
-      );
+  TAXA_PLATAFORMA: 0.15, // 15%
 
-      this.rotas = respostas.flat();
-      console.log("✅ Rotas carregadas:", this.rotas.length);
-    } catch (e) {
-      console.error("❌ Erro ao carregar rotas", e);
-      throw e;
-    }
+  /* =========================
+     CRÉDITOS
+  ========================== */
+
+  getCreditos(){
+    return parseFloat(localStorage.getItem("rf_creditos")) || 0;
   },
 
-  listarOrigens() {
-    return [...new Set(this.rotas.map(r => r.origem))].sort();
+  setCreditos(valor){
+    const numero = parseFloat(valor) || 0;
+    localStorage.setItem("rf_creditos", numero.toFixed(2));
   },
 
-  listarDestinos(origem) {
-    return this.rotas
-      .filter(r => r.origem === origem)
-      .map(r => r.destino);
+  adicionarCreditos(valor){
+    const atual = this.getCreditos();
+    this.setCreditos(atual + parseFloat(valor));
   },
 
-  buscarValor(origem, destino) {
-    let rota = this.rotas.find(
-      r => r.origem === origem && r.destino === destino
-    );
-
-    if (!rota) {
-      rota = this.rotas.find(
-        r => r.origem === destino && r.destino === origem
-      );
-    }
-
-    return rota ? Number(rota.valor) : null;
+  descontarCreditos(valor){
+    const atual = this.getCreditos();
+    const novo = Math.max(0, atual - parseFloat(valor));
+    this.setCreditos(novo);
   },
 
-  calcularValorCompleto(origem, parada, destino) {
+  validarCreditoParaCorrida(valorCorrida){
+    const taxa = valorCorrida * this.TAXA_PLATAFORMA;
+    return this.getCreditos() >= taxa;
+  },
 
-    if (!origem || !destino) return null;
+  aplicarTaxaCorrida(valorCorrida){
+    const taxa = valorCorrida * this.TAXA_PLATAFORMA;
+    this.descontarCreditos(taxa);
+    return taxa;
+  },
 
-    // sem parada
-    if (!parada) {
-      return this.buscarValor(origem, destino);
+  /* =========================
+     STATUS ONLINE
+  ========================== */
+
+  setOnline(status){
+    localStorage.setItem("rf_online", status ? "1" : "0");
+  },
+
+  isOnline(){
+    const status = localStorage.getItem("rf_online");
+    return status === "1";
+  },
+
+  /* =========================
+     GANHOS DO DIA
+  ========================== */
+
+  atualizarGanhos(valor){
+
+    const hoje = new Date().toDateString();
+    const dataSalva = localStorage.getItem("rf_data_ganhos");
+
+    if(dataSalva !== hoje){
+      localStorage.setItem("rf_ganhos_dia", "0.00");
+      localStorage.setItem("rf_data_ganhos", hoje);
     }
 
-    // com parada
-    const trecho1 = this.buscarValor(origem, parada);
-    const trecho2 = this.buscarValor(parada, destino);
+    const atual = parseFloat(localStorage.getItem("rf_ganhos_dia")) || 0;
+    const novo = atual + parseFloat(valor);
 
-    if (trecho1 === null || trecho2 === null) return null;
+    localStorage.setItem("rf_ganhos_dia", novo.toFixed(2));
+  },
 
-    return trecho1 + trecho2;
+  getGanhosHoje(){
+    return parseFloat(localStorage.getItem("rf_ganhos_dia")) || 0;
+  },
+
+  /* =========================
+     CORRIDA ATUAL (VERSÃO DEFINITIVA)
+  ========================== */
+
+  setCorridaAtual(dados){
+    localStorage.setItem("rf_corrida_atual", JSON.stringify(dados));
+  },
+
+  getCorridaAtual(){
+    const dados = localStorage.getItem("rf_corrida_atual");
+    return dados ? JSON.parse(dados) : null;
+  },
+
+  atualizarStatusCorridaAtual(status){
+    const corrida = this.getCorridaAtual();
+    if(!corrida) return;
+
+    corrida.status = status;
+    localStorage.setItem("rf_corrida_atual", JSON.stringify(corrida));
+  },
+
+  limparCorridaAtual(){
+    localStorage.removeItem("rf_corrida_atual");
+  },
+
+  /* =========================
+     CORRIDA SIMULADA (PARA HOME)
+  ========================== */
+
+  criarCorridaSimulada(){
+
+    if(this.getCorridaAtual()) return null;
+
+    const corrida = {
+      id: Date.now(),
+      valor: 20 + Math.floor(Math.random() * 30),
+      origem: "Centro da Cidade",
+      destino: "Shopping Principal",
+      status: "pendente"
+    };
+
+    this.setCorridaAtual(corrida);
+    return corrida;
   }
+
 };
