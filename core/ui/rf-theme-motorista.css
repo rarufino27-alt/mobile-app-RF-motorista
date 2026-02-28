@@ -1,0 +1,67 @@
+:root{
+  --rf-bg-1:#18233A;
+  --rf-bg-2:#0A0F1C;
+  --rf-gold:#D6B85F;
+  --rf-gold-strong:#F4D97A;
+  --rf-green:#22c55e;
+  --rf-red:#ef4444;
+}
+
+body{
+  background:radial-gradient(circle at top,var(--rf-bg-1) 0%,var(--rf-bg-2) 70%);
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+
+/* CARD PADRÃO RF */
+.rf-card{
+  background:linear-gradient(145deg,#151B2B,#0F1422);
+  border:1px solid rgba(214,184,95,.3);
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 0 30px rgba(214,184,95,.15);
+}
+
+/* BOTÃO DOURADO */
+.rf-btn-gold{
+  background:linear-gradient(135deg,var(--rf-gold),var(--rf-gold-strong));
+  border:none;
+  border-radius:50px;
+  padding:16px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 0 20px rgba(214,184,95,.4);
+}
+
+/* BOTÃO VERDE */
+.rf-btn-green{
+  background:var(--rf-green);
+  border:none;
+  border-radius:50px;
+  padding:16px;
+  font-weight:700;
+  color:#fff;
+  cursor:pointer;
+}
+
+/* BOTÃO VERMELHO */
+.rf-btn-red{
+  background:var(--rf-red);
+  border:none;
+  border-radius:50px;
+  padding:16px;
+  font-weight:700;
+  color:#fff;
+  cursor:pointer;
+}
+
+/* ANIMAÇÃO BREATH */
+@keyframes rf-breath{
+  0%{box-shadow:0 0 10px rgba(214,184,95,.3);}
+  50%{box-shadow:0 0 30px rgba(214,184,95,.8);}
+  100%{box-shadow:0 0 10px rgba(214,184,95,.3);}
+}
+
+.rf-breath{
+  animation:rf-breath 2.5s infinite;
+}
