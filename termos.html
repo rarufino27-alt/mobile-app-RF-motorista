@@ -1,141 +1,321 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
-<title>RF Driver – Termos de Uso</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Regulamento Operacional - Grupo RF</title>
+
 <style>
+
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
 }
 
 body{
-  background:#000;
-  color:#fff;
-  line-height:1.6;
-  padding:20px;
+background:linear-gradient(to bottom,#0f0f0f,#1a1a1a);
+color:#fff;
+min-height:100vh;
 }
+
+/* HEADER */
+
+.top-white{
+background:#fff;
+padding:20px 20px 28px 20px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-bottom-left-radius:32px;
+border-bottom-right-radius:32px;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.logo-area{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.logo-img{
+height:60px;
+border-radius:16px;
+}
+
+.logo-text-dark{
+font-weight:900;
+letter-spacing:1px;
+color:#000;
+font-size:1.1rem;
+}
+
+.back-btn{
+font-size:24px;
+cursor:pointer;
+color:#000;
+}
+
+/* CONTAINER */
 
 .container{
-  max-width:900px;
-  margin:0 auto;
+padding:30px 20px 60px;
+max-width:520px;
+margin:auto;
 }
 
-h1{
-  color:#facc15;
-  margin-bottom:20px;
+.title{
+font-size:26px;
+color:#facc15;
+margin-bottom:10px;
+font-weight:700;
 }
 
-h2{
-  margin-top:30px;
-  margin-bottom:10px;
-  color:#facc15;
-  font-size:1.1rem;
+.intro{
+opacity:.8;
+margin-bottom:25px;
 }
 
-p{
-  margin-bottom:12px;
-  font-size:.95rem;
-  color:#ddd;
+/* CARDS */
+
+.card{
+background:#1c1c1c;
+border-radius:18px;
+padding:18px;
+margin-bottom:12px;
+display:flex;
+align-items:center;
+gap:14px;
+cursor:pointer;
+border:1px solid rgba(255,255,255,.05);
+transition:.2s;
 }
 
-.footer{
-  margin-top:40px;
-  font-size:.85rem;
-  color:#888;
+.card:hover{
+background:#232323;
+transform:scale(1.03);
 }
+
+.icon{
+font-size:20px;
+}
+
+.card span{
+font-size:16px;
+}
+
+.num{
+color:#facc15;
+font-weight:bold;
+}
+
+/* PAGE */
+
+.page{
+display:none;
+animation:fade .25s ease;
+line-height:1.6;
+}
+
+.page h2{
+color:#facc15;
+margin-bottom:10px;
+}
+
+.back{
+margin-top:30px;
+display:inline-block;
+color:#facc15;
+cursor:pointer;
+}
+
+ul{
+padding-left:18px;
+margin-top:10px;
+}
+
+/* ANIMAÇÃO */
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+body[data-theme="light"]{
+background:#f3f3f3;
+color:#000;
+}
+
+body[data-theme="light"] .card{
+background:#fff;
+}
+
 </style>
+
 </head>
+
 <body>
+
+<!-- HEADER -->
+
+<div class="top-white">
+
+<div class="logo-area">
+<img src="icons/icon-192.png" class="logo-img">
+<span class="logo-text-dark">GRUPO RF</span>
+</div>
+
+<div class="back-btn" onclick="voltarHome()">←</div>
+
+</div>
 
 <div class="container">
 
-<h1>TERMOS DE USO – RF DRIVER</h1>
+<div id="menu">
 
-<p><strong>Última atualização:</strong> 2026</p>
+<div class="title">
+Regulamento Operacional
+</div>
 
-<p>Estes Termos de Uso regulam a utilização do aplicativo RF Driver, plataforma digital de intermediação de serviços de transporte individual privado, operada por:</p>
+<div class="intro">
+Escolha um tópico para visualizar as regras completas.
+</div>
 
-<p><strong>Rafael Felipe Aparecido de Moura Rufino</strong><br>
-CNPJ: 58.615.336/0001-49</p>
+<div class="card" onclick="openPage('r1')">
+<div class="icon">📍</div>
+<span><span class="num">1.</span> Localização</span>
+</div>
 
-<p>Ao utilizar o aplicativo, o usuário declara que leu, compreendeu e concorda integralmente com estes Termos.</p>
+<div class="card" onclick="openPage('r2')">
+<div class="icon">🚗</div>
+<span><span class="num">2.</span> Condições do Veículo</span>
+</div>
 
-<h2>1. Natureza do Serviço</h2>
+<div class="card" onclick="openPage('r3')">
+<div class="icon">📲</div>
+<span><span class="num">3.</span> Solicitação de Viagens</span>
+</div>
 
-<p>O RF Driver atua exclusivamente como plataforma tecnológica de intermediação entre passageiros e motoristas parceiros independentes. O RF Driver não presta diretamente serviços de transporte, não emprega motoristas e não possui vínculo empregatício com os mesmos.</p>
+<div class="card" onclick="openPage('r4')">
+<div class="icon">💰</div>
+<span><span class="num">4.</span> Taxas Adicionais</span>
+</div>
 
-<h2>2. Cadastro e Acesso</h2>
+<div class="card" onclick="openPage('r5')">
+<div class="icon">📅</div>
+<span><span class="num">5.</span> Taxa Semanal</span>
+</div>
 
-<p>Para utilizar o aplicativo, o usuário deverá fornecer informações verdadeiras, completas e atualizadas, especialmente número de telefone válido.</p>
+<div class="card" onclick="openPage('r6')">
+<div class="icon">⭐</div>
+<span><span class="num">6.</span> Prioridade de Atendimento</span>
+</div>
 
-<p>O usuário é responsável por manter a confidencialidade de sua conta e por todas as atividades realizadas em seu acesso.</p>
+<div class="card" onclick="openPage('r7')">
+<div class="icon">⚠️</div>
+<span><span class="num">7.</span> Medidas Disciplinares</span>
+</div>
 
-<h2>3. Conduta do Usuário</h2>
+<div class="card" onclick="openPage('r8')">
+<div class="icon">❌</div>
+<span><span class="num">8.</span> Cancelamento</span>
+</div>
 
-<p>É proibido:</p>
-<p>• Utilizar o aplicativo para fins ilícitos;<br>
-• Inserir informações falsas;<br>
-• Praticar atos de violência, discriminação ou assédio;<br>
-• Danificar o veículo do motorista;<br>
-• Solicitar corridas fraudulentas.</p>
+<div class="card" onclick="openPage('r9')">
+<div class="icon">⏱</div>
+<span><span class="num">9.</span> Tempo de Resposta</span>
+</div>
 
-O descumprimento poderá resultar em bloqueio definitivo da conta.
+<div class="card" onclick="openPage('r10')">
+<div class="icon">📆</div>
+<span><span class="num">10.</span> Reserva de Corridas</span>
+</div>
 
-<h2>4. Pagamentos</h2>
-
-<p>Os valores das corridas são previamente definidos pela plataforma e informados antes da confirmação da solicitação.</p>
-
-<p>O RF Driver poderá aplicar taxas adicionais conforme regras internas, como adicional noturno, paradas extras ou serviços adicionais.</p>
-
-<h2>5. Cancelamentos</h2>
-
-<p>Cancelamentos poderão estar sujeitos a cobrança, conforme regras exibidas no momento da solicitação da corrida.</p>
-
-<h2>6. Responsabilidade</h2>
-
-<p>O RF Driver não se responsabiliza por:</p>
-<p>• Condutas individuais de motoristas ou passageiros;<br>
-• Objetos esquecidos no veículo;<br>
-• Danos decorrentes de caso fortuito ou força maior.</p>
-
-<h2>7. Privacidade e Proteção de Dados (LGPD)</h2>
-
-<p>Os dados pessoais coletados são tratados conforme a Lei nº 13.709/2018 (Lei Geral de Proteção de Dados – LGPD).</p>
-
-<p>Os dados podem incluir:</p>
-<p>• Nome;<br>
-• Telefone;<br>
-• Localização geográfica;<br>
-• Informações de corrida.</p>
-
-<p>Os dados são utilizados exclusivamente para operação da plataforma e segurança dos usuários.</p>
-
-<h2>8. Localização (GPS)</h2>
-
-<p>O aplicativo poderá coletar dados de localização em tempo real para:</p>
-<p>• Identificação da posição do passageiro;<br>
-• Rastreamento do motorista durante a corrida;<br>
-• Segurança e monitoramento do trajeto.</p>
-
-<h2>9. Alterações nos Termos</h2>
-
-<p>O RF Driver poderá alterar estes Termos a qualquer momento. O uso contínuo da plataforma implica aceitação das alterações.</p>
-
-<h2>10. Foro</h2>
-
-<p>Fica eleito o foro da comarca do domicílio do titular da empresa para dirimir quaisquer controvérsias decorrentes destes Termos.</p>
-
-<div class="footer">
-RF Driver – Mobilidade com Excelência<br>
-CNPJ: 58.615.336/0001-49
+<div class="card" onclick="openPage('r11')">
+<div class="icon">📊</div>
+<span><span class="num">11.</span> Ordem de Atendimento</span>
 </div>
 
 </div>
+
+<!-- EXEMPLO DE REGRA -->
+
+<div id="r1" class="page">
+
+<h2>1. Localização</h2>
+
+<p>Para participar das solicitações de viagens dentro dos grupos de passageiros do RF, é obrigatório que o motorista esteja com a localização em tempo real ativa no grupo de localização.</p>
+
+<ul>
+
+<li>O motorista deverá manter a localização ativa por 8 horas.</li>
+
+<li>Caso aceite corrida sem localização ativa, poderá perder a prioridade.</li>
+
+<li>Administradores não são obrigados a manter localização ativa.</li>
+
+</ul>
+
+<div class="back" onclick="back()">← voltar</div>
+
+</div>
+
+</div>
+
+<script>
+
+function openPage(id){
+
+document.getElementById("menu").style.display="none"
+
+document.querySelectorAll(".page").forEach(p=>{
+p.style.display="none"
+})
+
+document.getElementById(id).style.display="block"
+
+}
+
+function back(){
+
+document.getElementById("menu").style.display="block"
+
+document.querySelectorAll(".page").forEach(p=>{
+p.style.display="none"
+})
+
+}
+
+function voltarHome(){
+window.location.href="home.html"
+}
+
+/* BOTÃO VOLTAR CELULAR */
+
+history.pushState(null,null,location.href)
+
+window.onpopstate=function(){
+window.location.href="termos.html"
+}
+
+(function(){
+
+const temaSalvo = localStorage.getItem("rf_theme") || "dark";
+
+document.body.setAttribute("data-theme", temaSalvo);
+
+})();
+
+</script>
 
 </body>
 </html>
