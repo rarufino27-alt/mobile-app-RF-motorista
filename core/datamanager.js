@@ -2,27 +2,27 @@ const DataManager = {
 
   rotas: [],
 
-  arquivos: arquivos: [
+  arquivos: [
 
-  "/data/Padaria-de-Gilberto-Cruzeiro.json",
-  "/data/aguia-american-club-br-101.json",
-  "/data/bairro-baixo.json",
-  "/data/bairro-alto.json",
-  "/data/calhetas.json",
-  "/data/centro-do-cabo.json",
-  "/data/cohab.json",
-  "/data/condominio-porto-do-cabo.json",
-  "/data/dharma-ville.json",
-  "/data/enseadas.json",
-  "/data/gaibu.json",
-  "/data/longas.json",
-  "/data/itapuama.json",
-  "/data/lote-garapu2-lote-dona-amara.json",
-  "/data/setor-4.json",
-  "/data/shopping-costinha.json",
-  "/data/xareu.json"
+    "data/Padaria-de-Gilberto-Cruzeiro.json",
+    "data/aguia-american-club-br-101.json",
+    "data/bairro-baixo.json",
+    "data/bairro-alto.json",
+    "data/calhetas.json",
+    "data/centro-do-cabo.json",
+    "data/cohab.json",
+    "data/condominio-porto-do-cabo.json",
+    "data/dharma-ville.json",
+    "data/enseadas.json",
+    "data/gaibu.json",
+    "data/longas.json",
+    "data/itapuama.json",
+    "data/lote-garapu2-lote-dona-amara.json",
+    "data/setor-4.json",
+    "data/shopping-costinha.json",
+    "data/xareu.json"
 
-],
+  ],
 
   async carregar(){
 
@@ -47,22 +47,18 @@ const DataManager = {
 
       let dados = []
 
-      // 🔥 SUPORTE AOS 3 FORMATOS
       respostas.forEach(bloco => {
 
-        // 🥇 FORMATO 1: ARRAY NORMAL
         if(Array.isArray(bloco)){
           dados.push(...bloco)
         }
 
-        // 🥈 e 🥉 OBJETOS
         else{
 
           for(const chave in bloco){
 
             const valor = bloco[chave]
 
-            // 🥉 FORMATO 3: DESTINO COM GRUPO DE ORIGENS
             if(valor && Array.isArray(valor.origens)){
 
               valor.origens.forEach(origem => {
@@ -76,7 +72,6 @@ const DataManager = {
 
             }
 
-            // 🥈 FORMATO 2: POR ORIGEM
             else if(Array.isArray(valor)){
 
               valor.forEach(item => {
@@ -96,7 +91,6 @@ const DataManager = {
 
       })
 
-      // 🔥 VALIDAÇÃO
       dados = this.validarESanitizar(dados)
 
       this.rotas = dados
@@ -108,12 +102,12 @@ const DataManager = {
     }catch(e){
 
       console.error("❌ Erro ao carregar rotas:", e)
+      throw e;
 
     }
 
   },
 
-  // 🔥 VALIDADOR PROFISSIONAL
   validarESanitizar(lista){
 
     const erros = []
@@ -210,27 +204,19 @@ const DataManager = {
   },
 
   listarOrigens(){
-
     return Object.keys(this.indice).sort()
-
   },
 
   listarDestinos(origem){
-
     if(!this.indice[origem]) return []
-
     return Object.keys(this.indice[origem]).sort()
-
   },
 
   buscarValor(origem,destino){
-
     if(this.indice[origem] && this.indice[origem][destino]){
       return this.indice[origem][destino]
     }
-
     return null
-
   }
 
 }
