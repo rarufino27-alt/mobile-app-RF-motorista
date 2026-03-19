@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GFV Passageiro</title>
+<title>RF Passageiro</title>
 
 <style>
 
 :root{
-  --gfv-primary:#F25522;
-  --gfv-primary-strong:#c8441a;
+  --rf-gold:#D6B85F;
+  --rf-gold-strong:#F4D97A;
 }
 
 *{
@@ -26,7 +26,7 @@ html,body{
 body{
   position:relative;
   overflow:hidden;
-  background: radial-gradient(circle at top,#1a1a1a 0%,#0a0a0a 70%);
+  background: radial-gradient(circle at top,#1A2133 0%,#080A12 70%);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -44,7 +44,7 @@ body::before{
   width:160%;
   height:160%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(circle, rgba(242,85,34,.15), transparent 70%);
+  background:radial-gradient(circle, rgba(214,184,95,.15), transparent 70%);
   animation:rotateBg 18s linear infinite;
   pointer-events:none;
 }
@@ -69,7 +69,7 @@ body::before{
   width:300px;
   height:300px;
   border-radius:50%;
-  border:2px solid rgba(242,85,34,.4);
+  border:2px solid rgba(214,184,95,.4);
   left:50%;
   top:50%;
   transform:translate(-50%,-50%);
@@ -81,7 +81,7 @@ body::before{
   position:absolute;
   inset:0;
   border-radius:50%;
-  border:2px solid rgba(242,85,34,.3);
+  border:2px solid rgba(214,184,95,.3);
   animation:pulse 4s infinite;
 }
 
@@ -107,7 +107,7 @@ body::before{
   width:260px;
   height:260px;
   border-radius:50%;
-  background:radial-gradient(circle,var(--gfv-primary),transparent 70%);
+  background:radial-gradient(circle,var(--rf-gold),transparent 70%);
   filter:blur(60px);
   opacity:.4;
   left:50%;
@@ -177,7 +177,7 @@ body::before{
 .progress-bar{
   height:100%;
   width:0%;
-  background:linear-gradient(90deg,var(--gfv-primary),var(--gfv-primary-strong));
+  background:linear-gradient(90deg,var(--rf-gold),var(--rf-gold-strong));
   animation:load 4s ease forwards;
 }
 
@@ -213,16 +213,10 @@ body::before{
   <div class="radar"></div>
   <div class="glow"></div>
 
-  <!-- COLOQUE SUA LOGO GFV AQUI -->
-  <img 
-  src="/icons/logo-1024.png" 
-  class="logo" 
-  alt="GFV"
-  onerror="this.src='/icons/icon-512.png'"
->
+  <img src="icons/logo-1024.png" class="logo" alt="RF Passageiro">
 
   <div class="tagline">
-    Grupo Família Viagens
+    Tabela OFICIAL de Preços GFV
   </div>
 
   <div class="progress">
@@ -233,7 +227,7 @@ body::before{
 
 <script>
 
-/* Splash otimizado */
+/* Splash otimizado (4.5s total) */
 
 setTimeout(()=>{
   document.body.classList.add("fade-out");
