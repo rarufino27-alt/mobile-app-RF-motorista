@@ -1,29 +1,49 @@
 body{
-background:radial-gradient(circle at top,#1f1f1f 0%,#0a0a0a 55%,#000 100%);
+background:radial-gradient(circle at top,#1a1a1a 0%,#0a0a0a 55%,#000 100%);
 color:#fff;
 height:100vh;
 overflow:hidden;
 }
 
-/* TEMA CLARO */
+/* =========================
+TEMA CLARO
+========================= */
 
 body[data-theme="light"]{
-background:#f3f3f3;
-color:#000;
+background:#f3f4f6;
+color:#111;
 }
+
+/* =========================
+CARDS
+========================= */
 
 body[data-theme="light"] .card{
 background:#ffffff;
+border:1px solid rgba(0,0,0,0.08);
+box-shadow:0 10px 25px rgba(0,0,0,.08);
 }
+
+/* =========================
+MENU
+========================= */
 
 body[data-theme="light"] .menu{
 background:#ffffff;
-color:#000;
+color:#111;
 }
 
 body[data-theme="light"] .menu-item{
 border-bottom:1px solid rgba(0,0,0,.08);
 }
+
+body[data-theme="light"] .menu-item:hover{
+background:#fff3ef;
+}
+
+/* =========================
+MODAL
+========================= */
 
 body[data-theme="light"] .modal{
 background:rgba(0,0,0,.35);
@@ -45,6 +65,10 @@ body[data-theme="light"] .lista div:hover{
 background:#f2f2f2;
 }
 
+/* =========================
+MODAL VEÍCULO
+========================= */
+
 body[data-theme="light"] .rf-modal{
 background:rgba(0,0,0,.35);
 }
@@ -62,22 +86,9 @@ body[data-theme="light"] .rf-option:hover{
 background:#f2f2f2;
 }
 
-/* TEMA CLARO */
-
-body[data-theme="light"]{
-background:#f3f4f6;
-color:#111;
-}
-
-/* CARDS */
-
-body[data-theme="light"] .card{
-background:#ffffff;
-border:1px solid rgba(0,0,0,0.08);
-box-shadow:0 10px 25px rgba(0,0,0,.08);
-}
-
-/* INPUTS */
+/* =========================
+INPUTS
+========================= */
 
 body[data-theme="light"] textarea,
 body[data-theme="light"] .select{
@@ -92,43 +103,44 @@ body[data-theme="light"] textarea::placeholder{
 color:#666;
 }
 
-/* FOOTER */
+/* =========================
+FOOTER
+========================= */
 
 body[data-theme="light"] .footer{
 background:#ffffff;
 border-top:1px solid rgba(0,0,0,0.1);
 }
 
-/* VALOR */
+/* =========================
+VALORES
+========================= */
 
 body[data-theme="light"] .valor{
-color:#f59e0b;
+color:#F25522;
 }
 
-/* BOTÃO */
+/* =========================
+BOTÃO
+========================= */
 
 body[data-theme="light"] .cta-area button{
-background:linear-gradient(135deg,#facc15,#f59e0b);
-color:#111;
+background:linear-gradient(135deg,#F25522,#c8441a);
+color:#fff;
 }
 
-/* HEADER */
+/* =========================
+HEADER
+========================= */
 
 body[data-theme="light"] .top-white{
 background:#ffffff;
 box-shadow:0 10px 30px rgba(0,0,0,.08);
 }
 
-/* MENU */
-
-body[data-theme="light"] .menu{
-background:#ffffff;
-color:#111;
-}
-
-body[data-theme="light"] .menu-item:hover{
-background:#f3f4f6;
-}
+/* =========================
+SELECT CUSTOM
+========================= */
 
 .select{
 appearance:none;
@@ -136,6 +148,10 @@ background-image:url("data:image/svg+xml;utf8,<svg fill='%23999' height='20' vie
 background-repeat:no-repeat;
 background-position:right 10px center;
 }
+
+/* =========================
+CARD HOVER
+========================= */
 
 .card{
 transition:all .25s ease;
