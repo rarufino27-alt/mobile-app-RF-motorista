@@ -6,11 +6,11 @@
 <title>GFV – Viagem</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="core/datamanager.js"></script>
+<script src="/core/datamanager.js"></script>
 
-<link rel="stylesheet" href="/theme/theme.css">
-<link rel="stylesheet" href="/theme/layout.css">
-<link rel="stylesheet" href="/theme/components.css">
+<link rel="stylesheet" href="/theme.css/theme.css">
+<link rel="stylesheet" href="/theme.css/layout.css">
+<link rel="stylesheet" href="/theme.css/components.css">
 
 </head>
 
@@ -38,7 +38,11 @@
 
 <div class="top-white">
 <div class="logo-area">
-<img src="logo.png" class="logo-img">
+<img 
+  src="/icons/logo-1024.png" 
+  class="logo-img"
+  onerror="this.src='/icons/icon-512.png'"
+>
 <span class="logo-text-dark">
 GFV MOTORISTA
 </span>
@@ -135,7 +139,6 @@ Para onde <span>vamos</span> hoje?
 </div>
 
 <div class="campo">
-
 <div class="campo-left">
 <div class="dot" style="background:#3b82f6;"></div>
 <div>Tipo de veículo</div>
@@ -146,11 +149,9 @@ Para onde <span>vamos</span> hoje?
 </div>
 
 <input type="hidden" id="tipoCarro" value="1">
-
 </div>
 
 </div>
-
 </div>
 
 <div class="bottom">
