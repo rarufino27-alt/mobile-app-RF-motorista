@@ -38,61 +38,38 @@
 
 <div class="top-white">
 <div class="logo-area">
-<img 
-  src="icons/logo-1024.png" 
-  class="logo-img"
-  onerror="this.src='icons/icon-512.png'"
->
-<span class="logo-text-dark">
-GFV MOTORISTA
-</span>
+<img src="icons/logo-1024.png" class="logo-img" onerror="this.src='icons/icon-512.png'">
+<span class="logo-text-dark">GFV MOTORISTA</span>
 </div>
 <div class="menu-btn-dark" onclick="abrirMenu()">☰</div>
 </div>
 
 <!-- SLIDER -->
-
 <div class="slider">
 <div class="slides" id="slides">
 
-<div class="slide slide-text">
-  <div class="slide-content">
-    <h2>Tabela <span class="destaque">Oficial</span> GFV</h2>
-    <p>Preço fixo e justo para todos</p>
-    <button class="slide-btn" data-acao="origem">Começar</button>
-  </div>
+<div class="slide">
+<div class="slide-content">
+<h2>Tabela <span class="destaque">Oficial</span> GFV</h2>
+<p>Preço fixo e justo para todos</p>
+<button class="slide-btn" data-acao="origem">Começar</button>
+</div>
 </div>
 
-<div class="slide slide-text">
-  <div class="slide-content">
-    <h2>Ganhos <span class="destaque">semanais</span></h2>
-    <p>Veja como ganhar bônus</p>
-    <button class="slide-btn" data-acao="bonus">Ver regras</button>
-  </div>
+<div class="slide">
+<div class="slide-content">
+<h2>Ganhos <span class="destaque">semanais</span></h2>
+<p>Veja como ganhar bônus</p>
+<button class="slide-btn" data-acao="bonus">Ver regras</button>
+</div>
 </div>
 
-<div class="slide slide-text">
-  <div class="slide-content">
-    <h2>Suporte <span class="destaque">rápido</span></h2>
-    <p>Fale direto com a equipe</p>
-    <button class="slide-btn" data-acao="whatsapp">Falar agora</button>
-  </div>
+<div class="slide">
+<div class="slide-content">
+<h2>Suporte <span class="destaque">rápido</span></h2>
+<p>Fale direto com a equipe</p>
+<button class="slide-btn" data-acao="whatsapp">Falar agora</button>
 </div>
-
-<div class="slide slide-text">
-  <div class="slide-content">
-    <h2>Corrida cancelada?</h2>
-    <p>Garantimos seu deslocamento</p>
-    <button class="slide-btn" data-acao="cancelamento">Resolver</button>
-  </div>
-</div>
-
-<div class="slide slide-text">
-  <div class="slide-content">
-    <h2>Não <span class="destaque">recebeu?</span></h2>
-    <p>O grupo resolve pra você</p>
-    <button class="slide-btn" data-acao="naoRecebeu">Resolver</button>
-  </div>
 </div>
 
 </div>
@@ -102,16 +79,12 @@ GFV MOTORISTA
 <div class="dotSlide ativo"></div>
 <div class="dotSlide"></div>
 <div class="dotSlide"></div>
-<div class="dotSlide"></div>
-<div class="dotSlide"></div>
 </div>
 
 <div class="center">
 
-<div class="titulo-box">
 <div class="titulo-central">
 Para onde <span>vamos</span> hoje?
-</div>
 </div>
 
 <div class="card">
@@ -123,28 +96,20 @@ Para onde <span>vamos</span> hoje?
 </div>
 </div>
 
-<div class="campo" id="paradaBtn" style="display:none;">
-<div class="campo-left">
-<div class="dot parada"></div>
-<div id="paradaTexto">Selecionar parada</div>
-</div>
-</div>
-
 <div class="campo" id="destinoBtn">
 <div class="campo-left">
 <div class="dot destino"></div>
 <div id="destinoTexto">Selecionar destino</div>
 </div>
-<div class="plus" id="addParada">＋</div>
 </div>
 
-<div class="campo">
+<div class="campo" id="tipoCarroBtn">
 <div class="campo-left">
 <div class="dot" style="background:#3b82f6;"></div>
 <div>Tipo de veículo</div>
 </div>
 
-<div class="rf-select" id="tipoCarroBtn">
+<div class="rf-select">
 <span id="tipoCarroTexto">4 lugares</span>
 </div>
 
@@ -155,29 +120,17 @@ Para onde <span>vamos</span> hoje?
 </div>
 
 <div class="bottom">
-<button id="confirmar" disabled>Confirmar rota</button>
+<button id="confirmar">Confirmar rota</button>
 </div>
 
-<div class="modal" id="modal">
-<div class="modal-content">
-<input type="text" id="busca" placeholder="Buscar local...">
-<div class="lista" id="lista"></div>
-</div>
-</div>
-
-<div class="rf-modal" id="modalTipoCarro">
+<!-- MODAL VEÍCULO -->
+<div class="rf-modal" id="modalTipoCarro" style="display:none;">
 <div class="rf-modal-content">
+
 <div class="rf-option" data-value="1">4 lugares</div>
 <div class="rf-option" data-value="1.5">6 lugares (+50%)</div>
-</div>
-</div>
 
-<div class="radar-bg">
-<div class="radar-circle"></div>
-<div class="radar-circle"></div>
-<div class="radar-circle"></div>
-<div class="radar-circle"></div>
-<div class="radar-line"></div>
+</div>
 </div>
 
 <script>
@@ -186,105 +139,33 @@ Para onde <span>vamos</span> hoje?
 async function init(){
 const loading = document.getElementById("loading");
 loading.style.display="flex";
+
 try{
 await DataManager.carregar();
 }catch(e){
 console.error(e);
 alert("Erro real: " + e.message);
 }
+
 loading.style.display="none";
 }
 init();
 
-/* SLIDER MELHORADO */
+/* SLIDER */
 let slideIndex = 0;
 const slides = document.getElementById("slides");
 const dots = document.querySelectorAll(".dotSlide");
 
-let sliderInterval = setInterval(nextSlide, 4000);
-
-function nextSlide(){
-  slideIndex++;
-  if(slideIndex >= dots.length) slideIndex = 0;
-  updateSlide();
-}
-
-function updateSlide(){
-  slides.style.transform = `translateX(-${slideIndex * 100}%)`;
-  dots.forEach(d=>d.classList.remove("ativo"));
-  dots[slideIndex].classList.add("ativo");
-}
-
-/* PAUSA AO INTERAGIR */
-function pauseSlider(){
-  clearInterval(sliderInterval);
-}
-
-slides.addEventListener("touchstart", pauseSlider);
-slides.addEventListener("mousedown", pauseSlider);
-
-/* SWIPE */
-let startX=0,endX=0,isDragging=false;
-
-slides.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
-slides.addEventListener("touchend",e=>{
-endX=e.changedTouches[0].clientX;
-handleSwipe();
-});
-
-slides.addEventListener("mousedown",e=>{
-isDragging=true;
-startX=e.clientX;
-});
-slides.addEventListener("mouseup",e=>{
-if(!isDragging) return;
-endX=e.clientX;
-isDragging=false;
-handleSwipe();
-});
-
-function handleSwipe(){
-const diff=startX-endX;
-if(Math.abs(diff)<50) return;
-
-if(diff>0){
+setInterval(()=>{
 slideIndex++;
-if(slideIndex >= dots.length) slideIndex = dots.length - 1;
-}else{
-slideIndex--;
-if(slideIndex < 0) slideIndex = 0;
-}
+if(slideIndex >= dots.length) slideIndex = 0;
 
-updateSlide();
-}
+slides.style.transform = `translateX(-${slideIndex*100}%)`;
 
-/* BOTÕES */
-document.querySelectorAll(".slide-btn").forEach(btn=>{
-btn.onclick=()=>{
-const acao=btn.dataset.acao;
+dots.forEach(d=>d.classList.remove("ativo"));
+dots[slideIndex].classList.add("ativo");
 
-if(acao==="origem"){
-document.getElementById("origemBtn").click();
-}
-
-if(acao==="bonus"){
-window.location.href="bonus.html";
-}
-
-if(acao==="cancelamento"){
-window.location.href="cancelamento.html";
-}
-
-if(acao==="naoRecebeu"){
-window.location.href="nao-recebeu.html";
-}
-
-if(acao==="whatsapp"){
-const msg=encodeURIComponent("Olá! Preciso de suporte no grupo GFV.");
-window.open(`https://wa.me/5581989823239?text=${msg}`,"_blank");
-}
-};
-});
+},4000);
 
 /* MENU */
 function abrirMenu(){
@@ -304,6 +185,42 @@ window.location.href=p;
 const temaSalvo=localStorage.getItem("rf_theme")||"dark";
 document.body.setAttribute("data-theme",temaSalvo);
 })();
+
+/* =========================
+MODAL VEÍCULO (CORREÇÃO REAL)
+========================= */
+
+const modalTipo = document.getElementById("modalTipoCarro");
+const tipoBtn = document.getElementById("tipoCarroBtn");
+const tipoTexto = document.getElementById("tipoCarroTexto");
+const tipoInput = document.getElementById("tipoCarro");
+
+/* ABRIR */
+tipoBtn.onclick = ()=>{
+modalTipo.style.display = "flex";
+};
+
+/* FECHAR AO CLICAR FORA */
+modalTipo.onclick = (e)=>{
+if(e.target === modalTipo){
+modalTipo.style.display = "none";
+}
+};
+
+/* SELEÇÃO */
+document.querySelectorAll(".rf-option").forEach(op=>{
+op.onclick = ()=>{
+
+const valor = op.dataset.value;
+const texto = op.innerText;
+
+tipoInput.value = valor;
+tipoTexto.innerText = texto;
+
+modalTipo.style.display = "none";
+
+};
+});
 
 </script>
 
