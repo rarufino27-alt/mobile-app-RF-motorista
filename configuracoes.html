@@ -3,28 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Configurações - GFV</title>
+<title>Configurações - RF Driver</title>
 
 <style>
-
-:root{
-  --gold:#D6B85F;
-  --gold-strong:#F4D97A;
-}
 
 body{
 margin:0;
 font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-background: radial-gradient(circle at top,#1A2133 0%,#080A12 70%);
+background:#0f0f0f;
 color:#fff;
-transition:.3s;
+transition:0.3s;
 }
 
 /* TEMA CLARO */
 
 body[data-theme="light"]{
-background:#f3f4f6;
-color:#111;
+background:#f3f3f3;
+color:#000;
 }
 
 body[data-theme="light"] .card{
@@ -40,44 +35,40 @@ border-bottom:1px solid rgba(0,0,0,.08);
 
 .top-white{
 background:#ffffff;
-padding:20px;
+padding:20px 20px 28px 20px;
 display:flex;
 align-items:center;
-justify-content:space-between;
-border-bottom-left-radius:28px;
-border-bottom-right-radius:28px;
-box-shadow:0 10px 25px rgba(0,0,0,.2);
+border-bottom-left-radius:32px;
+border-bottom-right-radius:32px;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
 }
 
 .logo-img{
-height:42px;
-border-radius:12px;
+height:60px;
+border-radius:16px;
 }
 
 /* TITULO */
 
 h1{
-color:var(--gold);
-margin:25px 20px 10px;
-font-size:22px;
+color:#facc15;
+margin:30px 20px 10px;
 }
 
 /* CONTAINER */
 
 .container{
-padding:0 16px 40px;
-max-width:480px;
-margin:auto;
+padding:0 20px 40px;
 }
 
 /* CARD */
 
 .card{
-background:rgba(255,255,255,0.04);
-border-radius:16px;
-padding:16px;
-margin-bottom:16px;
-border:1px solid rgba(214,184,95,0.15);
+background:#1c1c1c;
+border-radius:20px;
+padding:20px;
+margin-bottom:20px;
+border:1px solid rgba(255,255,255,.08);
 }
 
 /* TITULO CARD */
@@ -85,7 +76,7 @@ border:1px solid rgba(214,184,95,0.15);
 .card-title{
 font-weight:700;
 margin-bottom:10px;
-color:var(--gold);
+color:#facc15;
 }
 
 /* OPÇÕES */
@@ -97,7 +88,6 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 cursor:pointer;
-transition:.2s;
 }
 
 .option:last-child{
@@ -106,14 +96,13 @@ border-bottom:none;
 
 .option:hover{
 opacity:.8;
-transform:translateX(3px);
 }
 
 /* BADGE */
 
 .badge{
 font-size:12px;
-background:var(--gold);
+background:#facc15;
 color:#000;
 padding:3px 8px;
 border-radius:20px;
@@ -122,18 +111,17 @@ border-radius:20px;
 /* LINK */
 
 a{
-color:var(--gold);
+color:#facc15;
 text-decoration:none;
 font-weight:600;
 }
 
 </style>
 </head>
-
 <body>
 
 <div class="top-white">
-<img src="logo.png" class="logo-img">
+<img src="icons/icon-192.png" class="logo-img">
 </div>
 
 <h1>Configurações</h1>
@@ -166,39 +154,59 @@ Contato do suporte
 </div>
 
 <br>
-<a href="home.html">← Voltar</a>
+<a href="index.html">← Voltar</a>
 
 </div>
   
 <script>
 
-/* CARREGAR TEMA */
+/* CARREGAR TEMA SALVO */
+
 (function(){
+
 const temaSalvo = localStorage.getItem("rf_theme") || "dark";
+
 document.body.setAttribute("data-theme", temaSalvo);
+
 atualizarLabel();
+
 })();
 
-/* ALTERAR TEMA */
+/* ALTERNAR TEMA */
+
 function alternarTema(){
+
 const atual = document.body.getAttribute("data-theme");
+
 const novo = atual === "dark" ? "light" : "dark";
+
 document.body.setAttribute("data-theme", novo);
+
 localStorage.setItem("rf_theme", novo);
+
 atualizarLabel();
+
 }
 
-/* LABEL */
+/* LABEL DO TEMA */
+
 function atualizarLabel(){
+
 const atual = document.body.getAttribute("data-theme");
+
 document.getElementById("temaAtual").innerText =
 atual === "dark" ? "🌙 Escuro" : "☀️ Claro";
+
 }
 
-/* WHATSAPP */
+/* SUPORTE WHATSAPP */
+
 function abrirSuporte(){
-const mensagem = encodeURIComponent("Olá, preciso de suporte no aplicativo GFV.");
+
+const mensagem = encodeURIComponent("Olá, preciso de suporte no aplicativo RF.");
+
 window.open(`https://wa.me/5581989823239?text=${mensagem}`, "_blank");
+
 }
 
 </script>
