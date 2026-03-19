@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>RF – Viagem</title>
+<title>GFV – Viagem</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="core/datamanager.js"></script>
@@ -27,7 +27,7 @@
 <h3>Menu</h3>
 
 <div class="menu-item" onclick="irPara('termos.html')">
-📜 Regras do Grupo RF
+📜 Regras do Grupo GFV
 </div>
 
 <div class="menu-item" onclick="irPara('configuracoes.html')">
@@ -38,9 +38,9 @@
 
 <div class="top-white">
 <div class="logo-area">
-<img src="icons/icon-512.png" class="logo-img">
+<img src="logo.png" class="logo-img">
 <span class="logo-text-dark">
-RF MOTORISTA
+GFV MOTORISTA
 </span>
 </div>
 <div class="menu-btn-dark" onclick="abrirMenu()">☰</div>
@@ -53,8 +53,8 @@ RF MOTORISTA
 
 <div class="slide slide-text">
   <div class="slide-content">
-    <h2>Tabela <span class="destaque">Oficial</span> RF Motorista</h2>
-    <p>Preço Fixo e justo para todos!</p>
+    <h2>Tabela <span class="destaque">Oficial</span> GFV</h2>
+    <p>Preço fixo e justo para todos</p>
     <button class="slide-btn" data-acao="origem">Começar</button>
   </div>
 </div>
@@ -62,15 +62,15 @@ RF MOTORISTA
 <div class="slide slide-text">
   <div class="slide-content">
     <h2>Ganhos <span class="destaque">semanais</span></h2>
-    <p>Veja como ganhar R$ 50 em bônus</p>
+    <p>Veja como ganhar bônus</p>
     <button class="slide-btn" data-acao="bonus">Ver regras</button>
   </div>
 </div>
 
 <div class="slide slide-text">
   <div class="slide-content">
-    <h2>Lâmpada <span class="destaque">queimou?</span></h2>
-    <p>Suporte imediato</p>
+    <h2>Suporte <span class="destaque">rápido</span></h2>
+    <p>Fale direto com a equipe</p>
     <button class="slide-btn" data-acao="whatsapp">Falar agora</button>
   </div>
 </div>
@@ -266,7 +266,7 @@ window.location.href="nao-recebeu.html";
 }
 
 if(acao==="whatsapp"){
-const msg=encodeURIComponent("Olá! Preciso de suporte no grupo RF.");
+const msg=encodeURIComponent("Olá! Preciso de suporte no grupo GFV.");
 window.open(`https://wa.me/5581989823239?text=${msg}`,"_blank");
 }
 };
@@ -285,118 +285,7 @@ function irPara(p){
 window.location.href=p;
 }
 
-/* SISTEMA */
-// (mantido igual)
-let origem=null,parada=null,destino=null,modo=null;
-const modal=document.getElementById("modal");
-const lista=document.getElementById("lista");
-const busca=document.getElementById("busca");
-const confirmarBtn=document.getElementById("confirmar");
-
-function abrirModal(tipo){
-if(tipo!=="origem"&&!origem){alert("Selecione a origem primeiro.");return;}
-modo=tipo;
-busca.value="";
-modal.style.display="flex";
-let dados=[];
-if(tipo==="origem") dados=DataManager.listarOrigens();
-if(tipo==="parada"){
-dados=DataManager.listarDestinos(origem)
-.filter(p=>DataManager.listarDestinos(p).length>0);
-}
-if(tipo==="destino"){
-dados=parada?DataManager.listarDestinos(parada):DataManager.listarDestinos(origem);
-}
-renderLista(dados);
-}
-
-function renderLista(arr){
-lista.innerHTML="";
-arr.forEach(item=>{
-const div=document.createElement("div");
-div.innerText=item;
-div.onclick=()=>{
-selecionar(item);
-modal.style.display="none";
-};
-lista.appendChild(div);
-});
-}
-
-busca.addEventListener("input",()=>{
-const termo=busca.value.toLowerCase();
-Array.from(lista.children).forEach(div=>{
-div.style.display=div.innerText.toLowerCase().includes(termo)?"block":"none";
-});
-});
-
-const tipoCarroBtn=document.getElementById("tipoCarroBtn");
-const modalTipoCarro=document.getElementById("modalTipoCarro");
-const tipoCarroTexto=document.getElementById("tipoCarroTexto");
-const tipoCarroInput=document.getElementById("tipoCarro");
-
-tipoCarroBtn.onclick=()=>modalTipoCarro.style.display="flex";
-
-document.querySelectorAll("#modalTipoCarro .rf-option").forEach(opcao=>{
-opcao.onclick=()=>{
-tipoCarroInput.value=opcao.dataset.value;
-tipoCarroTexto.innerText=opcao.innerText;
-modalTipoCarro.style.display="none";
-};
-});
-
-modalTipoCarro.onclick=e=>{
-if(e.target===modalTipoCarro) modalTipoCarro.style.display="none";
-};
-
-function selecionar(valor){
-if(modo==="origem"){
-origem=valor;parada=null;destino=null;
-origemTexto.innerText=valor;
-paradaTexto.innerText="Selecionar parada";
-destinoTexto.innerText="Selecionar destino";
-paradaBtn.style.display="none";
-}
-if(modo==="parada"){
-parada=valor;destino=null;
-paradaTexto.innerText=valor;
-}
-if(modo==="destino"){
-destino=valor;
-destinoTexto.innerText=valor;
-}
-confirmarBtn.disabled=!(origem&&destino);
-}
-
-origemBtn.onclick=()=>abrirModal("origem");
-paradaBtn.onclick=()=>abrirModal("parada");
-destinoBtn.onclick=()=>abrirModal("destino");
-
-addParada.onclick=e=>{
-e.stopPropagation();
-if(!origem){alert("Selecione a origem primeiro.");return;}
-paradaBtn.style.display="flex";
-};
-
-modal.onclick=e=>{
-if(e.target===modal) modal.style.display="none";
-};
-
-confirmarBtn.onclick=()=>{
-let valorTotal=0;
-if(!parada){
-valorTotal=DataManager.buscarValor(origem,destino)||0;
-}else{
-valorTotal=(DataManager.buscarValor(origem,parada)||0)
-+(DataManager.buscarValor(parada,destino)||0);
-}
-const tipoCarro=parseFloat(tipoCarroInput.value);
-localStorage.setItem("rf_corrida_temp",JSON.stringify({
-origem,parada,destino,valor:valorTotal,categoria:tipoCarro
-}));
-window.location.href="resumo.html";
-};
-
+/* TEMA */
 (function(){
 const temaSalvo=localStorage.getItem("rf_theme")||"dark";
 document.body.setAttribute("data-theme",temaSalvo);
