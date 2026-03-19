@@ -6,11 +6,11 @@
 <title>GFV – Viagem</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="/core/datamanager.js"></script>
+<script src="core/datamanager.js"></script>
 
-<link rel="stylesheet" href="/theme.css/theme.css">
-<link rel="stylesheet" href="/theme.css/layout.css">
-<link rel="stylesheet" href="/theme.css/components.css">
+<link rel="stylesheet" href="theme.css/theme.css">
+<link rel="stylesheet" href="theme.css/layout.css">
+<link rel="stylesheet" href="theme.css/components.css">
 
 </head>
 
@@ -39,9 +39,9 @@
 <div class="top-white">
 <div class="logo-area">
 <img 
-  src="/icons/logo-1024.png" 
+  src="icons/logo-1024.png" 
   class="logo-img"
-  onerror="this.src='/icons/icon-512.png'"
+  onerror="this.src='icons/icon-512.png'"
 >
 <span class="logo-text-dark">
 GFV MOTORISTA
@@ -189,24 +189,39 @@ loading.style.display="flex";
 try{
 await DataManager.carregar();
 }catch(e){
-alert("Erro ao carregar rotas.");
+console.error(e);
+alert("Erro real: " + e.message);
 }
 loading.style.display="none";
 }
 init();
 
-/* SLIDER */
-let slideIndex=0;
-const slides=document.getElementById("slides");
-const dots=document.querySelectorAll(".dotSlide");
+/* SLIDER MELHORADO */
+let slideIndex = 0;
+const slides = document.getElementById("slides");
+const dots = document.querySelectorAll(".dotSlide");
 
-setInterval(()=>{
-slideIndex++;
-if(slideIndex >= dots.length) slideIndex = 0;
-slides.style.transform=`translateX(-${slideIndex*100}%)`;
-dots.forEach(d=>d.classList.remove("ativo"));
-dots[slideIndex].classList.add("ativo");
-},4000);
+let sliderInterval = setInterval(nextSlide, 4000);
+
+function nextSlide(){
+  slideIndex++;
+  if(slideIndex >= dots.length) slideIndex = 0;
+  updateSlide();
+}
+
+function updateSlide(){
+  slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+  dots.forEach(d=>d.classList.remove("ativo"));
+  dots[slideIndex].classList.add("ativo");
+}
+
+/* PAUSA AO INTERAGIR */
+function pauseSlider(){
+  clearInterval(sliderInterval);
+}
+
+slides.addEventListener("touchstart", pauseSlider);
+slides.addEventListener("mousedown", pauseSlider);
 
 /* SWIPE */
 let startX=0,endX=0,isDragging=false;
@@ -240,9 +255,7 @@ slideIndex--;
 if(slideIndex < 0) slideIndex = 0;
 }
 
-slides.style.transform=`translateX(-${slideIndex*100}%)`;
-dots.forEach(d=>d.classList.remove("ativo"));
-dots[slideIndex].classList.add("ativo");
+updateSlide();
 }
 
 /* BOTÕES */
