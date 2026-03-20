@@ -258,7 +258,9 @@ const modal = document.getElementById("modal");
 const lista = document.getElementById("lista");
 const confirmarBtn = document.getElementById("confirmar");
 
+/* MODAL */
 function abrirModal(tipo){
+
   if(tipo !== "origem" && !origem){
     alert("Selecione a origem primeiro.");
     return;
@@ -290,7 +292,23 @@ function renderLista(arr){
   });
 }
 
+/* ATUALIZA BOTÃO */
+function atualizarBotao(){
+
+  const ativo = origem && destino;
+
+  confirmarBtn.disabled = !ativo;
+
+  if(ativo){
+    confirmarBtn.classList.add("ativo");
+  }else{
+    confirmarBtn.classList.remove("ativo");
+  }
+}
+
+/* SELEÇÃO */
 function selecionar(valor){
+
   if(modo === "origem"){
     origem = valor;
     origemTexto.innerText = valor;
@@ -304,15 +322,10 @@ function selecionar(valor){
     destinoTexto.innerText = valor;
   }
 
-  const ativo = origem && destino;
-confirmarBtn.disabled = !ativo;
-
-if(ativo){
-  confirmarBtn.classList.add("ativo");
-}else{
-  confirmarBtn.classList.remove("ativo");
+  atualizarBotao();
 }
 
+/* EVENTOS */
 origemBtn.onclick = ()=>abrirModal("origem");
 destinoBtn.onclick = ()=>abrirModal("destino");
 
@@ -357,43 +370,6 @@ confirmarBtn.onclick = ()=>{
     window.location.href = "resumo.html";
   }, 300);
 };
-
-/* ATIVAR BOTÃO */
-function atualizarBotao(){
-
-  const ativo = origem && destino;
-
-  confirmarBtn.disabled = !ativo;
-
-  if(ativo){
-    confirmarBtn.classList.add("ativo");
-  }else{
-    confirmarBtn.classList.remove("ativo");
-  }
-}
-
-/* ATUALIZA AO SELECIONAR */
-function selecionar(valor){
-
-  if(modo === "origem"){
-    origem = valor;
-    origemTexto.innerText = valor;
-
-    destino = null;
-    destinoTexto.innerText = "Selecionar destino";
-  }
-
-  if(modo === "destino"){
-    destino = valor;
-    destinoTexto.innerText = valor;
-  }
-
-  atualizarBotao();
-}
-
-/* EVENTOS */
-origemBtn.onclick = ()=>abrirModal("origem");
-destinoBtn.onclick = ()=>abrirModal("destino");
 
 /* TEMA */
 (function(){
