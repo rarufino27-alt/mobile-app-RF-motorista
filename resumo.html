@@ -73,6 +73,42 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(255,90,31,0.2);
 }
 
+  /* ===== ANIMAÇÃO VALOR ===== */
+.valor-animado {
+  transition: all 0.3s ease;
+}
+
+/* ===== PULSO PREMIUM ===== */
+@keyframes pulsePremium {
+  0% { transform: scale(0.95); opacity: 0.6; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.badge {
+  animation: pulsePremium 0.4s ease;
+}
+
+/* ===== DETALHE ANIMADO ===== */
+#detalheCompleto {
+  animation: fadeIn 0.3s ease;
+}
+
+/* ===== TOTAL PREMIUM ===== */
+.total-box {
+  background: linear-gradient(135deg, rgba(255,90,31,0.15), transparent);
+  padding: 12px;
+  border-radius: 12px;
+}
+
+/* ===== INTERAÇÃO ===== */
+.card {
+  transition: transform 0.2s ease;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
 </style>
 
 </head>
@@ -223,37 +259,45 @@ function calcular(){
   const praia = parseFloat(saidaPraiaEl.value)||0;
   const espera = parseFloat(esperaEl.value)||0;
 
+  function linha(nome, valor){
+    return `
+      <div class="linha-detalhe">
+        ${nome}
+        <span class="badge">R$ ${valor.toFixed(2)}</span>
+      </div>
+    `;
+  }
+
   if(feira > 0){
-    html += `<div class="linha-detalhe">Feira <span class="badge">R$ ${feira}</span></div>`;
+    html += linha("Feira", feira);
     total += feira;
   }
 
   if(animal > 0){
-    html += `<div class="linha-detalhe">Animal <span class="badge">R$ ${animal}</span></div>`;
+    html += linha("Animal", animal);
     total += animal;
   }
 
   if(praia > 0){
-    html += `<div class="linha-detalhe">Saída Praia <span class="badge">R$ ${praia}</span></div>`;
+    html += linha("Saída Praia", praia);
     total += praia;
   }
 
   if(espera > 5){
     let val = 3 + ((espera-5)*0.6);
-    html += `<div class="linha-detalhe">Espera <span class="badge">R$ ${val.toFixed(2)}</span></div>`;
+    html += linha("Espera", val);
     total += val;
   }
 
   document.getElementById("detalhe").innerHTML = html;
 
-  document.getElementById("valorFinal").innerText =
-    "R$ " + total.toFixed(2);
+  animarValor(total);
 
   document.getElementById("detalheCompleto").innerHTML = html + `
     <div class="total-box">Total: R$ ${total.toFixed(2)}</div>
   `;
 }
-
+  
 const feiraEl = document.getElementById("feira");
 const animalEl = document.getElementById("animal");
 const saidaPraiaEl = document.getElementById("saidaPraia");
@@ -263,6 +307,32 @@ document.querySelectorAll("select,input").forEach(e=>{
   e.addEventListener("change", calcular);
 });
 
+  function animarValor(valorFinal){
+
+  const el = document.getElementById("valorFinal");
+
+  let atual = parseFloat(el.innerText.replace("R$","").replace(",",".") || 0);
+
+  let incremento = (valorFinal - atual) / 10;
+
+  let i = 0;
+
+  const intervalo = setInterval(()=>{
+
+    atual += incremento;
+    i++;
+
+    el.innerText = "R$ " + atual.toFixed(2);
+
+    if(i >= 10){
+      el.innerText = "R$ " + valorFinal.toFixed(2);
+      clearInterval(intervalo);
+    }
+
+  }, 20);
+
+}
+  
 function toggleDetalhe(){
   const el = document.getElementById("detalheCompleto");
   el.style.display = el.style.display === "none" ? "block" : "none";
