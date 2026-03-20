@@ -10,7 +10,72 @@
 <link rel="stylesheet" href="theme.css/theme.css">
 <link rel="stylesheet" href="theme.css/layout.css">
 <link rel="stylesheet" href="theme.css/components.css">
+<style>
+  /* ===== BOTÃO PRINCIPAL ===== */
+.btn-confirmar {
+  width: 100%;
+  padding: 18px;
 
+  font-size: 16px;
+  font-weight: 800;
+
+  border-radius: 30px;
+
+  background: linear-gradient(135deg, #ff5a1f, #ff7a3a);
+  color: #fff;
+
+  box-shadow:
+    0 10px 30px rgba(255,90,31,0.4),
+    0 0 20px rgba(255,90,31,0.2);
+
+  transition: all 0.3s ease;
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== GLOW ANIMADO ===== */
+.btn-confirmar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 60%);
+  opacity: 0;
+
+  transition: 0.4s;
+}
+
+.btn-confirmar:active::after {
+  opacity: 1;
+}
+
+/* ===== PULSE ===== */
+@keyframes pulseConfirmar {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+/* ===== ATIVO ===== */
+.btn-confirmar:not(:disabled) {
+  animation: pulseConfirmar 1.5s infinite;
+}
+
+/* ===== DESABILITADO (BONITO) ===== */
+.btn-confirmar:disabled {
+  background: #555;
+  color: #999;
+  box-shadow: none;
+  animation: none;
+}
+
+/* ===== CLIQUE ===== */
+.btn-confirmar:active {
+  transform: scale(0.96);
+}
+  
+</style>
 </head>
 
 <body data-theme="dark">
@@ -121,7 +186,9 @@
 
 <!-- BOTÃO -->
 <div class="bottom">
-  <button id="confirmar" disabled>Confirmar rota</button>
+  <button id="confirmar" class="btn-confirmar" disabled>
+  Confirmar rota
+</button>
 </div>
 
 <!-- MODAL -->
@@ -237,7 +304,13 @@ function selecionar(valor){
     destinoTexto.innerText = valor;
   }
 
-  confirmarBtn.disabled = !(origem && destino);
+  const ativo = origem && destino;
+confirmarBtn.disabled = !ativo;
+
+if(ativo){
+  confirmarBtn.classList.add("ativo");
+}else{
+  confirmarBtn.classList.remove("ativo");
 }
 
 origemBtn.onclick = ()=>abrirModal("origem");
