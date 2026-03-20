@@ -4,37 +4,34 @@
 :root {
   /* IDENTIDADE */
   --primary: #ff5a1f;
-  --primary-dark: #cc4718;
 
   /* FUNDO */
-  --bg-dark: linear-gradient(180deg, #0a0a0a 0%, #111827 100%);
-  --background: #0f172a;
+  --background: #0b0b0b;
 
   /* CARDS */
-  --card: rgba(255,255,255,0.04);
+  --card: #111111;
 
   /* TEXTO */
   --text: #ffffff;
-  --text-secondary: #94a3b8;
+  --text-secondary: #a1a1aa;
 
   /* BORDAS */
   --border: rgba(255,255,255,0.08);
 
-  /* AÇÕES */
-  --accent: #facc15;
-  --accent-dark: #f59e0b;
+  /* INPUT */
+  --input-bg: #1a1a1a;
 
   /* STATUS */
   --success: #22c55e;
   --danger: #ef4444;
-  --warning: #facc15;
+  --warning: #f59e0b;
 }
 
 /* =========================
    BASE DARK (PADRÃO)
 ========================= */
 body {
-  background: var(--bg-dark);
+  background: var(--background);
   color: var(--text);
 }
 
@@ -42,7 +39,7 @@ body {
    LIGHT MODE
 ========================= */
 body[data-theme="light"] {
-  background: #f3f4f6;
+  --background: #f3f4f6;
   --card: #ffffff;
 
   --text: #111111;
@@ -50,52 +47,47 @@ body[data-theme="light"] {
 
   --border: rgba(0,0,0,0.08);
 
+  --input-bg: #f9fafb;
+
   background: var(--background);
   color: var(--text);
 }
 
 /* =========================
-   INPUTS LIGHT (GFV)
+   INPUTS (LIGHT)
 ========================= */
 body[data-theme="light"] .rf-select,
 body[data-theme="light"] input,
 body[data-theme="light"] textarea {
-  background: #f3f4f6;
-  color: #111;
-
-  border: 1px solid rgba(0,0,0,0.1);
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
+
 /* =========================
    CARD (LIGHT)
 ========================= */
 body[data-theme="light"] .card {
-  background: #ffffff;
-
-  border: 1px solid rgba(0,0,0,0.08);
+  background: var(--card);
+  border: 1px solid var(--border);
 
   box-shadow:
     0 10px 20px rgba(0,0,0,0.08),
     0 3px 6px rgba(0,0,0,0.05);
 }
 
-body[data-theme="light"] .card::before {
-  background: linear-gradient(90deg, #facc15, transparent);
-}
-
 /* =========================
    HEADER (LIGHT)
 ========================= */
 body[data-theme="light"] .top-bar {
-  background: #ffffff;
-
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  background: var(--card);
 }
 
 /* =========================
    MENU (LIGHT)
 ========================= */
 body[data-theme="light"] .menu {
-  background: #ffffff;
+  background: var(--card);
   color: var(--text);
 }
 
@@ -115,17 +107,8 @@ body[data-theme="light"] .modal {
 }
 
 body[data-theme="light"] .modal-content {
-  background: #ffffff;
+  background: var(--card);
   color: var(--text);
-
-  border: 1px solid var(--border);
-}
-
-/* INPUT BUSCA */
-body[data-theme="light"] .modal-content input {
-  background: #f9fafb;
-  color: var(--text);
-
   border: 1px solid var(--border);
 }
 
@@ -137,9 +120,8 @@ body[data-theme="light"] .rf-modal {
 }
 
 body[data-theme="light"] .rf-modal-content {
-  background: #ffffff;
+  background: var(--card);
   color: var(--text);
-
   border: 1px solid var(--border);
 }
 
@@ -155,10 +137,10 @@ body[data-theme="light"] .lista div:hover {
 }
 
 /* =========================
-   BOTÕES (AJUSTE LIGHT)
+   BOTÕES (LIGHT)
 ========================= */
 body[data-theme="light"] button {
-  color: #000;
+  color: #fff;
 }
 
 /* =========================
@@ -169,5 +151,5 @@ body,
 .menu,
 .modal-content,
 .rf-modal-content {
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background 0.25s ease, color 0.25s ease;
 }
