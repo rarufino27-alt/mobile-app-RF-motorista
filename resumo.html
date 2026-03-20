@@ -9,11 +9,76 @@
 <link rel="stylesheet" href="theme.css/layout.css">
 <link rel="stylesheet" href="theme.css/components.css">
 
+<style>
+
+/* ===== DESTAQUE RESUMO ===== */
+.resumo-rota div {
+  font-size: 16px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+/* ===== BADGES ===== */
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+
+  background: rgba(255,90,31,0.15);
+  color: var(--primary);
+
+  animation: fadeIn 0.3s ease;
+}
+
+/* ===== LINHAS DETALHE ===== */
+.linha-detalhe {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+/* ===== TOTAL ===== */
+.total-box {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--primary);
+
+  text-align: right;
+}
+
+/* ===== ANIMAÇÃO ===== */
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(5px);}
+  to { opacity:1; transform: translateY(0);}
+}
+
+/* ===== TOGGLE ===== */
+.detalhe-toggle {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+/* ===== INPUT FEEDBACK ===== */
+.rf-select:focus,
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,90,31,0.2);
+}
+
+</style>
+
 </head>
 
 <body data-theme="dark">
 
-<!-- MENU -->
 <div class="menu-overlay" id="menuOverlay" onclick="fecharMenu()"></div>
 
 <div class="menu" id="menu">
@@ -23,7 +88,6 @@
   <div class="menu-item" onclick="irPara('configuracoes.html')">⚙️ Configurações</div>
 </div>
 
-<!-- HEADER -->
 <div class="top-bar">
   <div class="logo-area">
     <img src="icons/icon-512.png" class="logo-img">
@@ -32,13 +96,12 @@
   <div class="menu-btn" onclick="abrirMenu()">☰</div>
 </div>
 
-<!-- CONTAINER -->
 <div class="container">
 
   <!-- ROTA -->
   <div class="card">
     <div class="card-title">Resumo da viagem</div>
-    <div id="rota"></div>
+    <div id="rota" class="resumo-rota"></div>
   </div>
 
   <!-- OBS -->
@@ -66,7 +129,7 @@
       <span>Taxa de Feira</span>
       <select id="feira" class="rf-select">
         <option value="0">Sem</option>
-        <option value="5">1 carrinho (R$5)</option>
+        <option value="5">1 carrinho</option>
         <option value="7.99">2+ carrinhos</option>
       </select>
     </div>
@@ -106,12 +169,11 @@
       Ver detalhes
     </div>
 
-    <div id="detalheCompleto" style="display:none; white-space:pre-line; margin-top:10px;"></div>
+    <div id="detalheCompleto" style="display:none; margin-top:10px;"></div>
   </div>
 
 </div>
 
-<!-- FOOTER -->
 <div class="bottom">
   <div style="text-align:center; margin-bottom:10px;">
     <strong id="valorFinal">R$ 0,00</strong>
@@ -120,12 +182,6 @@
 </div>
 
 <script>
-
-/* TEMA */
-(function(){
-  const tema = localStorage.getItem("gfv_theme") || "dark";
-  document.body.setAttribute("data-theme", tema);
-})();
 
 /* MENU */
 function abrirMenu(){
@@ -154,95 +210,64 @@ function montarRota(){
   `;
 }
 
-/* NOTURNO */
-function adicionalNoturno(base){
-  const h = new Date().getHours();
-  return (h >= 22 || h <= 5) ? (base <= 25 ? 4.99 : base*0.35) : 0;
-}
-
 /* CALCULO */
 function calcular(){
 
   let base = parseFloat(valor)||0;
   let total = base;
 
+  let html = "";
+
   const feira = parseFloat(feiraEl.value)||0;
   const animal = parseFloat(animalEl.value)||0;
   const praia = parseFloat(saidaPraiaEl.value)||0;
   const espera = parseFloat(esperaEl.value)||0;
 
-  const noturno = adicionalNoturno(base);
+  if(feira > 0){
+    html += `<div class="linha-detalhe">Feira <span class="badge">R$ ${feira}</span></div>`;
+    total += feira;
+  }
 
-  total += noturno + feira + animal + praia;
+  if(animal > 0){
+    html += `<div class="linha-detalhe">Animal <span class="badge">R$ ${animal}</span></div>`;
+    total += animal;
+  }
 
-  let esperaValor = 0;
+  if(praia > 0){
+    html += `<div class="linha-detalhe">Saída Praia <span class="badge">R$ ${praia}</span></div>`;
+    total += praia;
+  }
+
   if(espera > 5){
-    esperaValor = 3 + ((espera-5)*0.6);
-    total += esperaValor;
+    let val = 3 + ((espera-5)*0.6);
+    html += `<div class="linha-detalhe">Espera <span class="badge">R$ ${val.toFixed(2)}</span></div>`;
+    total += val;
   }
 
-  if(categoria > 1){
-    total *= categoria;
-  }
+  document.getElementById("detalhe").innerHTML = html;
 
-  let taxaCartao = 0;
-
-  if(pagamentoEl.value === "debito"){
-    taxaCartao = total * 0.02;
-    total /= 0.98;
-  }
-
-  if(pagamentoEl.value === "credito"){
-    taxaCartao = total * 0.05;
-    total /= 0.95;
-  }
-
-  /* RESUMO SIMPLES */
   document.getElementById("valorFinal").innerText =
     "R$ " + total.toFixed(2);
 
-  /* DETALHAMENTO COMPLETO */
-  let detalhado = "";
-
-  detalhado += `Valor base: R$ ${base.toFixed(2)}\n`;
-
-  if(noturno > 0) detalhado += `Noturno: R$ ${noturno.toFixed(2)}\n`;
-  if(feira > 0) detalhado += `Feira: R$ ${feira.toFixed(2)}\n`;
-  if(animal > 0) detalhado += `Animal: R$ ${animal.toFixed(2)}\n`;
-  if(praia > 0) detalhado += `Saída Praia: R$ ${praia.toFixed(2)}\n`;
-  if(esperaValor > 0) detalhado += `Espera: R$ ${esperaValor.toFixed(2)}\n`;
-
-  if(categoria > 1){
-    detalhado += `Categoria 6 lugares aplicada\n`;
-  }
-
-  if(taxaCartao > 0){
-    detalhado += `Taxa cartão: R$ ${taxaCartao.toFixed(2)}\n`;
-  }
-
-  detalhado += `\nTotal: R$ ${total.toFixed(2)}`;
-
-  document.getElementById("detalheCompleto").innerText = detalhado;
+  document.getElementById("detalheCompleto").innerHTML = html + `
+    <div class="total-box">Total: R$ ${total.toFixed(2)}</div>
+  `;
 }
 
-/* ELEMENTOS */
 const feiraEl = document.getElementById("feira");
 const animalEl = document.getElementById("animal");
 const saidaPraiaEl = document.getElementById("saidaPraia");
 const esperaEl = document.getElementById("espera");
-const pagamentoEl = document.getElementById("pagamento");
 
 document.querySelectorAll("select,input").forEach(e=>{
   e.addEventListener("change", calcular);
 });
 
-/* TOGGLE DETALHE */
 function toggleDetalhe(){
   const el = document.getElementById("detalheCompleto");
   el.style.display = el.style.display === "none" ? "block" : "none";
 }
 
-/* WHATSAPP */
 function solicitar(){
   const total = document.getElementById("valorFinal").innerText;
 
