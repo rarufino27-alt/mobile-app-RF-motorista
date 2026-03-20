@@ -1,494 +1,87 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-
-<meta charset="UTF-8">
+<!DOCTYPE html><html lang="pt-BR">
+<head><meta charset="UTF-8">
 <title>RF – Viagem</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="core/datamanager.js"></script>
-
-<style>
-
-
-/* =========================
-   BASE / FUNDO
-========================= */
-
-body{
-  padding-top:80px; /* espaço pro header fixo */
-  padding-bottom:100px; /* espaço pro botão */
-}
-
-/* FUNDO COM MOVIMENTO SUAVE */
-
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background: radial-gradient(circle at center, rgba(252,121,0,.18), transparent 70%);
-  animation:rotateBg 30s linear infinite;
-  z-index:0;
-  pointer-events:none;
-}
-
-@keyframes rotateBg{
-  from{transform:rotate(0deg);}
-  to{transform:rotate(360deg);}
-}
-
-/* =========================
-   CAMADAS
-========================= */
-
-.top-white{ z-index:5; position:relative; }
-.slider{ z-index:3; position:relative; margin-top:80px; }
-.center{ z-index:3; position:relative; margin-top:10px; }
-.card{ z-index:4; position:relative; }
-
-/* =========================
-   HEADER
-========================= */
-
-.top-white{
-  background:rgba(255,255,255,.9) !important;
-  backdrop-filter:blur(10px);
-}
-
-/* =========================
-   SLIDER
-========================= */
-
-.slider{
-  width:100%;
-  overflow:hidden;
-  position:relative;
-
-  margin-top:10px;
-}
-
-.slides{
-  display:flex;
-  width:100%;
-  transition:transform .4s ease;
-}
-
-.slide{
-  min-width:100%;
-  flex-shrink:0;
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-
-  padding:20px;
-}
-
-   .indicadores{
-  display:flex;
-  justify-content:center;
-  gap:6px;
-  margin:10px 0 20px;
-}
-
-   .center{
-  width:100%;
-  max-width:500px;
-  margin:0 auto;
-}
-   
-/* =========================
-   TÍTULO (BLOCO)
-========================= */
-
-.titulo-box{
-  margin:20px;
-  display:flex;
-  justify-content:center;
-}
-
-.titulo-central{
-  background:#fff;
-  padding:18px 22px;
-  border-radius:16px;
-  box-shadow:0 6px 20px rgba(0,0,0,.08);
-  font-size:20px;
-  text-align:center;
-}
-
-.titulo-central span{
-  color:#FC7900;
-}
-
-/* =========================
-   CARD PRINCIPAL
-========================= */
-
-.card{
-  width:100%;
-  background:#0c0c0c !important;
-  border-radius:18px;
-  margin:0 20px;
-  margin-top:10px;
-  padding:10px 0;
-  box-shadow:0 20px 50px rgba(0,0,0,.25);
-  border:1px solid rgba(252,121,0,.2);
-  backdrop-filter:blur(6px);
-}
-
-/* CAMPOS */
-
-.campo{
-  padding:18px 16px;
-  margin:0 10px;
-  background:transparent;
-  border-bottom:1px solid rgba(255,255,255,.1);
-  color:#fff;
-}
-
-.campo-left div{
-  color:#fff;
-}
-
-/* SELECT */
-
-.rf-select{
-  background:#1a1a1a;
-  color:#fff;
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:10px;
-  padding:6px 10px;
-}
-
-/* =========================
-   BOTÃO PRINCIPAL
-========================= */
-
-.bottom{
-  position:fixed;
-  bottom:20px;
-  left:0;
-  width:100%;
-  max-width:500px;
-  margin:auto;
-  right:0;
-
-  padding:0 20px;
-
-  z-index:1000;
-}
-
-#confirmar{
-  width:100%;
-  padding:18px;
-  border-radius:40px;
-  font-size:16px;
-  background:linear-gradient(90deg, #FC7900, #e56700);
-  color:#fff;
-  border:none;
-  box-shadow:0 10px 25px rgba(252,121,0,.35);
-}
-
-/* DESABILITADO */
-
-#confirmar:disabled{
-  background:#ccc;
-  box-shadow:none;
-}
-
-   .menu{
-  position:fixed;
-  top:0;
-  right:-260px;
-  width:260px;
-  height:100%;
-
-  background:#fff;
-
-  z-index:2000;
-  transition:.3s;
-}
-
-.menu.ativo{
-  right:0;
-}
-
-.menu-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.4);
-  display:none;
-  z-index:1500;
-}
-   
-/* =========================
-   RADAR (FUNDO SUAVE)
-========================= */
-
-.radar-bg{
-  position:fixed;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  pointer-events:none;
-  z-index:1;
-  opacity:.12;
-}
-
-.radar-circle{
-  position:absolute;
-  width:260px;
-  height:260px;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.4);
-  animation:pulse 5s infinite;
-}
-
-.radar-circle:nth-child(2){animation-delay:1.5s;}
-.radar-circle:nth-child(3){animation-delay:3s;}
-.radar-circle:nth-child(4){animation-delay:4.5s;}
-
-@keyframes pulse{
-  0%{
-    transform:scale(.8);
-    opacity:.5;
-  }
-  100%{
-    transform:scale(1.5);
-    opacity:0;
-  }
-}
-
-/* =========================
-   MENU / MODAIS
-========================= */
-
-.menu{
-  background:#fff;
-}
-
-.menu-item{
-  color:#333;
-}
-
-.modal-content,
-.rf-modal-content{
-  background:#fff;
-  border-radius:14px;
-}
-
-#busca{
-  background:#f2f2f2;
-  border-radius:10px;
-}
-
-/* =========================
-   LOADING
-========================= */
-
-.loading{
-  background:#fff;
-  color:#333;
-}
-
-/* =========================
-   TRANSIÇÃO GLOBAL
-========================= */
-
-*{
-  transition:all .2s ease;
-}
-
-   .top-white{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:70px;
-  z-index:1000;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding:0 16px;
-
-  background:rgba(255,255,255,.85) !important;
-  backdrop-filter:blur(14px);
-
-  border-bottom:1px solid rgba(0,0,0,.05);
-}
-</style>
-</head>
-
-<body>
-
-<div id="loading" class="loading">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="core/datamanager.js"></script><link rel="stylesheet" href="theme.css/theme.css">
+<link rel="stylesheet" href="theme.css/layout.css">
+<link rel="stylesheet" href="theme.css/components.css"></head><body><div id="loading" class="loading">
 <div class="loader"></div>
 <span>Carregando rotas...</span>
-</div>
-
-<div class="menu-overlay" id="menuOverlay" onclick="fecharMenu()"></div>
-
-<div class="menu" id="menu">
-<h3>Menu</h3>
-
-<div class="menu-item" onclick="irPara('termos.html')">
+</div><div class="menu-overlay" id="menuOverlay" onclick="fecharMenu()"></div><div class="menu" id="menu">
+<h3>Menu</h3><div class="menu-item" onclick="irPara('termos.html')">
 📜 Regras do Grupo RF
-</div>
-
-<div class="menu-item" onclick="irPara('configuracoes.html')">
+</div><div class="menu-item" onclick="irPara('configuracoes.html')">
 ⚙️ Configurações
-</div>
-
-</div>
-
-<div class="top-white">
+</div></div><div class="top-white">
 <div class="logo-area">
 <img src="icons/icon-512.png" class="logo-img">
-<span class="logo-text-dark">
-RF MOTORISTA
-</span>
+<span class="logo-text-dark">RF MOTORISTA</span>
 </div>
 <div class="menu-btn-dark" onclick="abrirMenu()">☰</div>
+</div><!-- SLIDER --><div class="slider">
+<div class="slides" id="slides"><div class="slide">
+<div class="slide-box">
+<h2>Tabela <span class="destaque">Oficial</span> RF</h2>
+<p>Preço fixo e justo</p>
+<button class="slide-btn" data-acao="origem">Começar</button>
 </div>
-
-<!-- SLIDER -->
-
-<div class="slider">
-<div class="slides" id="slides">
-
-<div class="slide slide-text">
-  <div class="slide-content">
-    <h2>Tabela <span class="destaque">Oficial</span> RF Motorista</h2>
-    <p>Preço Fixo e justo para todos!</p>
-    <button class="slide-btn" data-acao="origem">Começar</button>
-  </div>
+</div><div class="slide">
+<div class="slide-box">
+<h2>Ganhos <span class="destaque">semanais</span></h2>
+<p>Veja bônus</p>
+<button class="slide-btn" data-acao="bonus">Ver regras</button>
 </div>
-
-<div class="slide slide-text">
-  <div class="slide-content">
-    <h2>Ganhos <span class="destaque">semanais</span></h2>
-    <p>Veja como ganhar R$ 50 em bônus</p>
-    <button class="slide-btn" data-acao="bonus">Ver regras</button>
-  </div>
+</div><div class="slide">
+<div class="slide-box">
+<h2>Suporte rápido</h2>
+<p>Fale com a equipe</p>
+<button class="slide-btn" data-acao="whatsapp">Falar</button>
 </div>
-
-<div class="slide slide-text">
-  <div class="slide-content">
-    <h2>Lâmpada <span class="destaque">queimou?</span></h2>
-    <p>Suporte imediato</p>
-    <button class="slide-btn" data-acao="whatsapp">Falar agora</button>
-  </div>
-</div>
-
-<div class="slide slide-text">
-  <div class="slide-content">
-    <h2>Corrida cancelada?</h2>
-    <p>Garantimos seu deslocamento</p>
-    <button class="slide-btn" data-acao="cancelamento">Resolver</button>
-  </div>
-</div>
-
-<div class="slide slide-text">
-  <div class="slide-content">
-    <h2>Não <span class="destaque">recebeu?</span></h2>
-    <p>O grupo resolve pra você</p>
-    <button class="slide-btn" data-acao="naoRecebeu">Resolver</button>
-  </div>
-</div>
-
-</div>
-</div>
-
-<div class="indicadores">
+</div></div>
+</div><div class="indicadores">
 <div class="dotSlide ativo"></div>
 <div class="dotSlide"></div>
 <div class="dotSlide"></div>
-<div class="dotSlide"></div>
-<div class="dotSlide"></div>
-</div>
-
-<div class="center">
-
-<div class="titulo-box">
+</div><div class="center"><div class="titulo-box">
 <div class="titulo-central">
 Para onde <span>vamos</span> hoje?
 </div>
-</div>
-
-<div class="card">
-
-<div class="campo" id="origemBtn">
+</div><div class="card"><div class="campo" id="origemBtn">
 <div class="campo-left">
 <div class="dot origem"></div>
 <div id="origemTexto">Selecionar origem</div>
 </div>
-</div>
-
-<div class="campo" id="paradaBtn" style="display:none;">
+</div><div class="campo" id="paradaBtn" style="display:none;">
 <div class="campo-left">
 <div class="dot parada"></div>
 <div id="paradaTexto">Selecionar parada</div>
 </div>
-</div>
-
-<div class="campo" id="destinoBtn">
+</div><div class="campo" id="destinoBtn">
 <div class="campo-left">
 <div class="dot destino"></div>
 <div id="destinoTexto">Selecionar destino</div>
 </div>
 <div class="plus" id="addParada">＋</div>
-</div>
-
-<div class="campo">
-
+</div><div class="campo">
 <div class="campo-left">
 <div class="dot" style="background:#3b82f6;"></div>
 <div>Tipo de veículo</div>
-</div>
-
-<div class="rf-select" id="tipoCarroBtn">
+</div><div class="rf-select" id="tipoCarroBtn">
 <span id="tipoCarroTexto">4 lugares</span>
-</div>
-
-<input type="hidden" id="tipoCarro" value="1">
-
-</div>
-
-</div>
-
-</div>
-
-<div class="bottom">
+</div><input type="hidden" id="tipoCarro" value="1">
+</div></div>
+</div><div class="bottom">
 <button id="confirmar" disabled>Confirmar rota</button>
-</div>
-
-<div class="modal" id="modal">
+</div><div class="modal" id="modal">
 <div class="modal-content">
 <input type="text" id="busca" placeholder="Buscar local...">
 <div class="lista" id="lista"></div>
 </div>
-</div>
-
-<div class="rf-modal" id="modalTipoCarro">
+</div><div class="rf-modal" id="modalTipoCarro">
 <div class="rf-modal-content">
 <div class="rf-option" data-value="1">4 lugares</div>
 <div class="rf-option" data-value="1.5">6 lugares (+50%)</div>
 </div>
-</div>
-
-<div class="radar-bg">
-<div class="radar-circle"></div>
-<div class="radar-circle"></div>
-<div class="radar-circle"></div>
-<div class="radar-circle"></div>
-<div class="radar-line"></div>
-</div>
-
-<script>
+</div><script>
 
 /* INIT */
 async function init(){
@@ -516,71 +109,6 @@ dots.forEach(d=>d.classList.remove("ativo"));
 dots[slideIndex].classList.add("ativo");
 },4000);
 
-/* SWIPE */
-let startX=0,endX=0,isDragging=false;
-
-slides.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
-slides.addEventListener("touchend",e=>{
-endX=e.changedTouches[0].clientX;
-handleSwipe();
-});
-
-slides.addEventListener("mousedown",e=>{
-isDragging=true;
-startX=e.clientX;
-});
-slides.addEventListener("mouseup",e=>{
-if(!isDragging) return;
-endX=e.clientX;
-isDragging=false;
-handleSwipe();
-});
-
-function handleSwipe(){
-const diff=startX-endX;
-if(Math.abs(diff)<50) return;
-
-if(diff>0){
-slideIndex++;
-if(slideIndex >= dots.length) slideIndex = dots.length - 1;
-}else{
-slideIndex--;
-if(slideIndex < 0) slideIndex = 0;
-}
-
-slides.style.transform=`translateX(-${slideIndex*100}%)`;
-dots.forEach(d=>d.classList.remove("ativo"));
-dots[slideIndex].classList.add("ativo");
-}
-
-/* BOTÕES */
-document.querySelectorAll(".slide-btn").forEach(btn=>{
-btn.onclick=()=>{
-const acao=btn.dataset.acao;
-
-if(acao==="origem"){
-document.getElementById("origemBtn").click();
-}
-
-if(acao==="bonus"){
-window.location.href="bonus.html";
-}
-
-if(acao==="cancelamento"){
-window.location.href="cancelamento.html";
-}
-
-if(acao==="naoRecebeu"){
-window.location.href="nao-recebeu.html";
-}
-
-if(acao==="whatsapp"){
-const msg=encodeURIComponent("Olá! Preciso de suporte no grupo RF.");
-window.open(`https://wa.me/5581989823239?text=${msg}`,"_blank");
-}
-};
-});
-
 /* MENU */
 function abrirMenu(){
 menu.classList.add("ativo");
@@ -595,8 +123,8 @@ window.location.href=p;
 }
 
 /* SISTEMA */
-// (mantido igual)
 let origem=null,parada=null,destino=null,modo=null;
+
 const modal=document.getElementById("modal");
 const lista=document.getElementById("lista");
 const busca=document.getElementById("busca");
@@ -607,15 +135,11 @@ if(tipo!=="origem"&&!origem){alert("Selecione a origem primeiro.");return;}
 modo=tipo;
 busca.value="";
 modal.style.display="flex";
+
 let dados=[];
 if(tipo==="origem") dados=DataManager.listarOrigens();
-if(tipo==="parada"){
-dados=DataManager.listarDestinos(origem)
-.filter(p=>DataManager.listarDestinos(p).length>0);
-}
-if(tipo==="destino"){
-dados=parada?DataManager.listarDestinos(parada):DataManager.listarDestinos(origem);
-}
+if(tipo==="destino") dados=DataManager.listarDestinos(origem);
+
 renderLista(dados);
 }
 
@@ -632,43 +156,12 @@ lista.appendChild(div);
 });
 }
 
-busca.addEventListener("input",()=>{
-const termo=busca.value.toLowerCase();
-Array.from(lista.children).forEach(div=>{
-div.style.display=div.innerText.toLowerCase().includes(termo)?"block":"none";
-});
-});
-
-const tipoCarroBtn=document.getElementById("tipoCarroBtn");
-const modalTipoCarro=document.getElementById("modalTipoCarro");
-const tipoCarroTexto=document.getElementById("tipoCarroTexto");
-const tipoCarroInput=document.getElementById("tipoCarro");
-
-tipoCarroBtn.onclick=()=>modalTipoCarro.style.display="flex";
-
-document.querySelectorAll("#modalTipoCarro .rf-option").forEach(opcao=>{
-opcao.onclick=()=>{
-tipoCarroInput.value=opcao.dataset.value;
-tipoCarroTexto.innerText=opcao.innerText;
-modalTipoCarro.style.display="none";
-};
-});
-
-modalTipoCarro.onclick=e=>{
-if(e.target===modalTipoCarro) modalTipoCarro.style.display="none";
-};
-
 function selecionar(valor){
 if(modo==="origem"){
-origem=valor;parada=null;destino=null;
+origem=valor;
 origemTexto.innerText=valor;
-paradaTexto.innerText="Selecionar parada";
+destino=null;
 destinoTexto.innerText="Selecionar destino";
-paradaBtn.style.display="none";
-}
-if(modo==="parada"){
-parada=valor;destino=null;
-paradaTexto.innerText=valor;
 }
 if(modo==="destino"){
 destino=valor;
@@ -678,40 +171,46 @@ confirmarBtn.disabled=!(origem&&destino);
 }
 
 origemBtn.onclick=()=>abrirModal("origem");
-paradaBtn.onclick=()=>abrirModal("parada");
 destinoBtn.onclick=()=>abrirModal("destino");
 
-addParada.onclick=e=>{
-e.stopPropagation();
-if(!origem){alert("Selecione a origem primeiro.");return;}
-paradaBtn.style.display="flex";
+/* VEÍCULO */
+const tipoCarroBtn=document.getElementById("tipoCarroBtn");
+const modalTipoCarro=document.getElementById("modalTipoCarro");
+const tipoCarroTexto=document.getElementById("tipoCarroTexto");
+const tipoCarroInput=document.getElementById("tipoCarro");
+
+tipoCarroBtn.onclick=()=>modalTipoCarro.style.display="flex";
+
+document.querySelectorAll("#modalTipoCarro .rf-option").forEach(op=>{
+op.onclick=()=>{
+tipoCarroInput.value=op.dataset.value;
+tipoCarroTexto.innerText=op.innerText;
+modalTipoCarro.style.display="none";
+};
+});
+
+modalTipoCarro.onclick=e=>{
+if(e.target===modalTipoCarro) modalTipoCarro.style.display="none";
 };
 
-modal.onclick=e=>{
-if(e.target===modal) modal.style.display="none";
-};
-
+/* CONFIRMAR */
 confirmarBtn.onclick=()=>{
-let valorTotal=0;
-if(!parada){
-valorTotal=DataManager.buscarValor(origem,destino)||0;
-}else{
-valorTotal=(DataManager.buscarValor(origem,parada)||0)
-+(DataManager.buscarValor(parada,destino)||0);
-}
+const valor=DataManager.buscarValor(origem,destino)||0;
 const tipoCarro=parseFloat(tipoCarroInput.value);
+
 localStorage.setItem("rf_corrida_temp",JSON.stringify({
-origem,parada,destino,valor:valorTotal,categoria:tipoCarro
+origem,destino,valor,categoria:tipoCarro
 }));
+
 window.location.href="resumo.html";
 };
 
+/* TEMA */
 (function(){
 const temaSalvo=localStorage.getItem("rf_theme")||"dark";
 document.body.setAttribute("data-theme",temaSalvo);
 })();
 
 </script>
-
 </body>
 </html>
