@@ -11,28 +11,25 @@
 
 <style>
 
-/* ===== DESTAQUE RESUMO ===== */
-.resumo-rota div {
-  font-size: 16px;
-  margin-bottom: 6px;
-  font-weight: 500;
+/* ===== RESUMO CENTRAL ===== */
+.resumo-rota {
+  text-align: center;
+  margin-top: 10px;
 }
 
-/* ===== BADGES ===== */
-.badge {
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
+.resumo-rota div {
+  font-size: 16px;
+  margin: 6px 0;
   font-weight: 600;
+}
 
-  background: rgba(255,90,31,0.15);
-  color: var(--primary);
-
-  animation: fadeIn 0.3s ease;
+/* ===== SEPARAÇÃO MELHOR ===== */
+.card {
+  margin-bottom: 18px;
 }
 
 /* ===== LINHAS DETALHE ===== */
-.linha-detalhe {
+.linha {
   display: flex;
   justify-content: space-between;
   margin-bottom: 6px;
@@ -41,80 +38,38 @@
 
 /* ===== TOTAL ===== */
 .total-box {
-  margin-top: 10px;
+  margin-top: 12px;
   padding-top: 10px;
   border-top: 1px solid var(--border);
-
   font-size: 18px;
   font-weight: 800;
   color: var(--primary);
-
   text-align: right;
 }
 
-/* ===== ANIMAÇÃO ===== */
-@keyframes fadeIn {
-  from { opacity:0; transform: translateY(5px);}
-  to { opacity:1; transform: translateY(0);}
+/* ===== INPUT LIGHT FIX ===== */
+body[data-theme="light"] input,
+body[data-theme="light"] textarea,
+body[data-theme="light"] .rf-select {
+  background: #f3f4f6;
+  color: #111;
+  border: 1px solid rgba(0,0,0,0.1);
 }
 
-/* ===== TOGGLE ===== */
-.detalhe-toggle {
-  margin-top: 10px;
-  font-size: 13px;
-  color: var(--primary);
-  cursor: pointer;
+/* ===== INPUT DARK ===== */
+body[data-theme="dark"] input,
+body[data-theme="dark"] textarea,
+body[data-theme="dark"] .rf-select {
+  background: #111;
+  color: #fff;
 }
 
-/* ===== INPUT FEEDBACK ===== */
-.rf-select:focus,
-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(255,90,31,0.2);
-}
-
-  /* ===== ANIMAÇÃO VALOR ===== */
-.valor-animado {
-  transition: all 0.3s ease;
-}
-
-/* ===== PULSO PREMIUM ===== */
-@keyframes pulsePremium {
-  0% { transform: scale(0.95); opacity: 0.6; }
-  50% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(1); }
-}
-
-.badge {
-  animation: pulsePremium 0.4s ease;
-}
-
-/* ===== DETALHE ANIMADO ===== */
-#detalheCompleto {
-  animation: fadeIn 0.3s ease;
-}
-
-/* ===== TOTAL PREMIUM ===== */
-.total-box {
-  background: linear-gradient(135deg, rgba(255,90,31,0.15), transparent);
-  padding: 12px;
-  border-radius: 12px;
-}
-
-/* ===== INTERAÇÃO ===== */
-.card {
-  transition: transform 0.2s ease;
-}
-
-.card:active {
-  transform: scale(0.98);
-}
 </style>
-
 </head>
 
-<body data-theme="dark">
+<body>
 
+<!-- MENU -->
 <div class="menu-overlay" id="menuOverlay" onclick="fecharMenu()"></div>
 
 <div class="menu" id="menu">
@@ -124,6 +79,7 @@ input:focus {
   <div class="menu-item" onclick="irPara('configuracoes.html')">⚙️ Configurações</div>
 </div>
 
+<!-- HEADER -->
 <div class="top-bar">
   <div class="logo-area">
     <img src="icons/icon-512.png" class="logo-img">
@@ -132,6 +88,7 @@ input:focus {
   <div class="menu-btn" onclick="abrirMenu()">☰</div>
 </div>
 
+<!-- CONTAINER -->
 <div class="container">
 
   <!-- ROTA -->
@@ -198,18 +155,12 @@ input:focus {
   <!-- VALORES -->
   <div class="card">
     <div class="card-title">Valores</div>
-
     <div id="detalhe"></div>
-
-    <div class="detalhe-toggle" onclick="toggleDetalhe()">
-      Ver detalhes
-    </div>
-
-    <div id="detalheCompleto" style="display:none; margin-top:10px;"></div>
   </div>
 
 </div>
 
+<!-- FOOTER -->
 <div class="bottom">
   <div style="text-align:center; margin-bottom:10px;">
     <strong id="valorFinal">R$ 0,00</strong>
@@ -219,24 +170,32 @@ input:focus {
 
 <script>
 
+/* TEMA */
+(function(){
+  const tema = localStorage.getItem("gfv_theme") || "dark";
+  document.body.setAttribute("data-theme", tema);
+})();
+
 /* MENU */
 function abrirMenu(){
   menu.classList.add("ativo");
   menuOverlay.style.display="block";
 }
+
 function fecharMenu(){
   menu.classList.remove("ativo");
   menuOverlay.style.display="none";
 }
+
 function irPara(p){
-  window.location.href=p;
+  window.location.href = p;
 }
 
 /* DADOS */
 const corrida = JSON.parse(localStorage.getItem("gfv_corrida"));
-if(!corrida) window.location.href="index.html";
+if(!corrida) window.location.href = "index.html";
 
-let { origem, destino, valor, categoria = 1 } = corrida;
+let { origem, destino, valor } = corrida;
 
 /* ROTA */
 function montarRota(){
@@ -246,58 +205,68 @@ function montarRota(){
   `;
 }
 
+/* NOTURNO */
+function adicionalNoturno(base){
+  const agora = new Date();
+  const hora = agora.getHours() + agora.getMinutes() / 60;
+
+  if(hora >= 22.5 || hora <= 5){
+    if(base <= 24.99) return 5;
+    return base * 0.35;
+  }
+  return 0;
+}
+
 /* CALCULO */
 function calcular(){
 
-  let base = parseFloat(valor)||0;
+  let base = parseFloat(valor) || 0;
   let total = base;
 
   let html = "";
 
-  const feira = parseFloat(feiraEl.value)||0;
-  const animal = parseFloat(animalEl.value)||0;
-  const praia = parseFloat(saidaPraiaEl.value)||0;
-  const espera = parseFloat(esperaEl.value)||0;
+  const feira = parseFloat(feiraEl.value) || 0;
+  const animal = parseFloat(animalEl.value) || 0;
+  const praia = parseFloat(saidaPraiaEl.value) || 0;
+  const espera = parseFloat(esperaEl.value) || 0;
 
-  function linha(nome, valor){
-    return `
-      <div class="linha-detalhe">
-        ${nome}
-        <span class="badge">R$ ${valor.toFixed(2)}</span>
-      </div>
-    `;
+  const noturno = adicionalNoturno(base);
+
+  html += `<div class="linha"><span>Valor base</span><span>R$ ${base.toFixed(2)}</span></div>`;
+
+  if(noturno > 0){
+    html += `<div class="linha"><span>Adicional Noturno</span><span>R$ ${noturno.toFixed(2)}</span></div>`;
+    total += noturno;
   }
 
   if(feira > 0){
-    html += linha("Feira", feira);
+    html += `<div class="linha"><span>Feira</span><span>R$ ${feira.toFixed(2)}</span></div>`;
     total += feira;
   }
 
   if(animal > 0){
-    html += linha("Animal", animal);
+    html += `<div class="linha"><span>Animal</span><span>R$ ${animal.toFixed(2)}</span></div>`;
     total += animal;
   }
 
   if(praia > 0){
-    html += linha("Saída Praia", praia);
+    html += `<div class="linha"><span>Saída Praia</span><span>R$ ${praia.toFixed(2)}</span></div>`;
     total += praia;
   }
 
   if(espera > 5){
-    let val = 3 + ((espera-5)*0.6);
-    html += linha("Espera", val);
+    let val = 3 + ((espera - 5) * 0.6);
+    html += `<div class="linha"><span>Espera</span><span>R$ ${val.toFixed(2)}</span></div>`;
     total += val;
   }
 
+  html += `<div class="total-box">Total: R$ ${total.toFixed(2)}</div>`;
+
   document.getElementById("detalhe").innerHTML = html;
-
-  animarValor(total);
-
-  document.getElementById("detalheCompleto").innerHTML = html + `
-    <div class="total-box">Total: R$ ${total.toFixed(2)}</div>
-  `;
+  document.getElementById("valorFinal").innerText = "R$ " + total.toFixed(2);
 }
-  
+
+/* ELEMENTOS */
 const feiraEl = document.getElementById("feira");
 const animalEl = document.getElementById("animal");
 const saidaPraiaEl = document.getElementById("saidaPraia");
@@ -307,49 +276,21 @@ document.querySelectorAll("select,input").forEach(e=>{
   e.addEventListener("change", calcular);
 });
 
-  function animarValor(valorFinal){
-
-  const el = document.getElementById("valorFinal");
-
-  let atual = parseFloat(el.innerText.replace("R$","").replace(",",".") || 0);
-
-  let incremento = (valorFinal - atual) / 10;
-
-  let i = 0;
-
-  const intervalo = setInterval(()=>{
-
-    atual += incremento;
-    i++;
-
-    el.innerText = "R$ " + atual.toFixed(2);
-
-    if(i >= 10){
-      el.innerText = "R$ " + valorFinal.toFixed(2);
-      clearInterval(intervalo);
-    }
-
-  }, 20);
-
-}
-  
-function toggleDetalhe(){
-  const el = document.getElementById("detalheCompleto");
-  el.style.display = el.style.display === "none" ? "block" : "none";
-}
-
+/* WHATSAPP */
 function solicitar(){
+
   const total = document.getElementById("valorFinal").innerText;
 
-  const msg = `*RECIBO GFV*  
-Origem: ${origem}  
-Destino: ${destino}  
+  const msg = `*RECIBO GFV*
+Origem: ${origem}
+Destino: ${destino}
 
 Total: ${total}`;
 
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
 }
 
+/* INIT */
 montarRota();
 calcular();
 
