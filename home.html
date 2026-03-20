@@ -5,15 +5,14 @@
 <title>GFV Viagens</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- CORE -->
 <script src="core/datamanager.js"></script>
 
-<!-- CSS -->
 <link rel="stylesheet" href="theme.css/theme.css">
 <link rel="stylesheet" href="theme.css/layout.css">
 <link rel="stylesheet" href="theme.css/components.css">
 
 </head>
+
 <body data-theme="dark">
 
 <!-- LOADING -->
@@ -109,9 +108,11 @@
         <div class="dot" style="background:#3b82f6;"></div>
         <span>Tipo de veículo</span>
       </div>
+
       <div class="rf-select" id="tipoCarroBtn">
         <span id="tipoCarroTexto">4 lugares</span>
       </div>
+
       <input type="hidden" id="tipoCarro" value="1">
     </div>
 
@@ -123,7 +124,7 @@
   <button id="confirmar" disabled>Confirmar rota</button>
 </div>
 
-<!-- MODAL LISTA -->
+<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <input type="text" id="busca" placeholder="Buscar local...">
@@ -139,7 +140,6 @@
   </div>
 </div>
 
-<!-- SCRIPT -->
 <script>
 
 /* INIT */
@@ -189,7 +189,6 @@ let modo = null;
 
 const modal = document.getElementById("modal");
 const lista = document.getElementById("lista");
-const busca = document.getElementById("busca");
 const confirmarBtn = document.getElementById("confirmar");
 
 function abrirModal(tipo){
@@ -199,7 +198,6 @@ function abrirModal(tipo){
   }
 
   modo = tipo;
-  busca.value = "";
   modal.style.display = "flex";
 
   let dados = tipo === "origem"
