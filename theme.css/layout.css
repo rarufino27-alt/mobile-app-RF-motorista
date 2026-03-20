@@ -157,6 +157,7 @@ body {
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 20px;
+  transition: transform 0.3s ease; 
 }
 
 body[data-theme="light"] .slide-box h2 { color:#111; }
@@ -175,6 +176,9 @@ body[data-theme="dark"] .slide-box p { color:#ccc; }
   color: var(--text-secondary);
 }
 
+.slide-box:active {
+  transform: scale(0.98);
+}
 /* BOTÃO CORRETO */
 .slide-btn {
   margin-top: 12px;
