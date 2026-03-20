@@ -1,24 +1,20 @@
 /* =========================
-   VARIÁVEIS (PADRÃO GFV)
+   VARIÁVEIS BASE
 ========================= */
 :root {
   --primary: #ff5a1f;
-  --primary-dark: #cc4718;
-
-  --background: #0f172a;
-  --card: rgba(255,255,255,0.04);
 
   --text: #ffffff;
-  --text-secondary: #94a3b8;
+  --text-secondary: #a1a1aa;
 
+  --card: #111111;
   --border: rgba(255,255,255,0.08);
 
-  --accent: #facc15;
-  --accent-dark: #f59e0b;
+  --input-bg: #1a1a1a;
 
   --success: #22c55e;
   --danger: #ef4444;
-  --warning: #facc15;
+  --warning: #f59e0b;
 }
 
 /* =========================
@@ -27,16 +23,16 @@
 .card {
   position: relative;
 
-  background: #0f0f0f;
+  background: var(--card);
   border-radius: 16px;
   padding: 16px;
 
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-/* LINHA AMARELA TOP */
+/* LINHA DE DESTAQUE */
 .card::before {
   content: "";
   position: absolute;
@@ -46,9 +42,21 @@
   width: 60px;
   height: 3px;
 
-  background: linear-gradient(90deg, #facc15, transparent);
+  background: linear-gradient(90deg, var(--primary), transparent);
 
   border-top-left-radius: 16px;
+}
+
+/* =========================
+   TITULO
+========================= */
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+
+  margin-bottom: 10px;
+
+  color: var(--primary);
 }
 
 /* =========================
@@ -63,7 +71,7 @@
 
   border-bottom: 1px solid var(--border);
 
-  transition: all 0.2s ease;
+  transition: 0.2s;
 }
 
 .campo:last-child {
@@ -71,22 +79,7 @@
 }
 
 .campo:active {
-  transform: scale(0.98);
-  opacity: 0.8;
-}
-
-.campo-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  color: var(--text);
-}
-
-.campo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  transform: scale(0.97);
 }
 
 .campo-left {
@@ -95,13 +88,12 @@
   gap: 10px;
 }
 
-/* Garante espaço correto */
 .campo span {
   font-size: 14px;
 }
 
 /* =========================
-   DOTS (STATUS)
+   DOTS
 ========================= */
 .dot {
   width: 10px;
@@ -114,30 +106,20 @@
 .parada { background: var(--warning); }
 
 /* =========================
-   BOTÃO +
-========================= */
-.plus {
-  font-size: 20px;
-  color: var(--accent);
-  font-weight: bold;
-}
-
-/* =========================
-   SELECT CUSTOM
+   SELECT / INPUT
 ========================= */
 .rf-select,
 input,
 textarea {
   width: 100%;
 
-  background: #111;
+  background: var(--input-bg);
+  color: var(--text);
+
+  border: 1px solid var(--border);
   border-radius: 10px;
 
-  padding: 10px 12px;
-
-  border: 1px solid rgba(255,255,255,0.08);
-
-  color: #fff;
+  padding: 10px;
 
   transition: 0.2s;
 }
@@ -146,25 +128,30 @@ textarea {
 .rf-select:focus,
 input:focus,
 textarea:focus {
-  border: 1px solid #facc15;
-}
-
-.rf-select:active {
-  transform: scale(0.95);
+  border: 1px solid var(--primary);
 }
 
 /* =========================
-   BOTÕES PRINCIPAIS
+   BOTÃO
 ========================= */
 button {
-  background: linear-gradient(135deg, #facc15, #f59e0b);
+  background: var(--primary);
+  color: #fff;
 
   border-radius: 30px;
   font-weight: 700;
 
-  box-shadow:
-    0 10px 25px rgba(0,0,0,0.3),
-    inset 0 -2px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+
+  transition: 0.2s;
+}
+
+button:hover {
+  filter: brightness(1.05);
+}
+
+button:active {
+  transform: scale(0.96);
 }
 
 button:disabled {
@@ -172,13 +159,8 @@ button:disabled {
   cursor: not-allowed;
 }
 
-button:active {
-  transform: scale(0.95);
-  box-shadow: 0 5px 10px rgba(0,0,0,0.4);
-}
-
 /* =========================
-   MODAL LISTA
+   MODAL
 ========================= */
 .modal {
   position: fixed;
@@ -194,29 +176,20 @@ button:active {
 }
 
 .modal-content {
-  background: #1c1c1c;
+  background: var(--card);
 
-  border-radius: 18px;
+  border-radius: 16px;
   padding: 20px;
 
   width: 90%;
   max-width: 420px;
 
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
 }
 
-/* INPUT BUSCA */
+/* INPUT MODAL */
 .modal-content input {
-  width: 100%;
-  padding: 12px;
-
-  border-radius: 10px;
-  border: none;
-
-  margin-bottom: 10px;
-
-  background: #111;
-  color: var(--text);
+  background: var(--input-bg);
 }
 
 /* =========================
@@ -256,7 +229,7 @@ button:active {
 }
 
 .rf-modal-content {
-  background: #1c1c1c;
+  background: var(--card);
 
   border-radius: 16px;
   width: 90%;
@@ -264,7 +237,7 @@ button:active {
 
   padding: 10px;
 
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
 }
 
 .rf-option {
@@ -287,7 +260,7 @@ button:active {
 }
 
 /* =========================
-   SCROLL CUSTOM
+   SCROLL
 ========================= */
 .lista::-webkit-scrollbar {
   width: 6px;
@@ -299,19 +272,8 @@ button:active {
 }
 
 /* =========================
-   CONFIGURAÇÕES
+   CONFIG
 ========================= */
-
-.card-title {
-  font-size: 14px;
-  font-weight: 700;
-
-  margin-bottom: 10px;
-
-  color: #facc15;
-}
-
-/* OPÇÕES */
 .option {
   padding: 14px 0;
   border-bottom: 1px solid var(--border);
@@ -321,18 +283,12 @@ button:active {
   align-items: center;
 
   cursor: pointer;
-  transition: 0.2s;
 }
 
 .option:last-child {
   border-bottom: none;
 }
 
-.option:hover {
-  opacity: 0.8;
-}
-
-/* LINK VOLTAR */
 .link-voltar {
   color: var(--primary);
   text-decoration: none;
@@ -340,9 +296,8 @@ button:active {
 }
 
 /* =========================
-   PÁGINAS INTERNAS (TERMOS)
+   TERMOS
 ========================= */
-
 .page {
   display: none;
   animation: fade 0.25s ease;
@@ -358,10 +313,8 @@ button:active {
 
 .page ul {
   padding-left: 18px;
-  margin-top: 10px;
 }
 
-/* ANIMAÇÃO */
 @keyframes fade {
   from {
     opacity: 0;
@@ -373,39 +326,14 @@ button:active {
   }
 }
 
-/* CLIQUE SUAVE */
-.campo:active {
-  transform: scale(0.97);
-}
-
-/* BOTÃO PREMIUM */
-button {
-  transition: all 0.2s ease;
-}
-
-button:active {
-  transform: scale(0.96);
-}
-
+/* =========================
+   TOTAL
+========================= */
 .total-final {
   text-align: right;
 
   font-size: 16px;
   font-weight: 800;
 
-  color: #facc15;
-}
-
-/* HOVER (web) */
-button:hover {
-  filter: brightness(1.05);
-}
-
-.total-final {
-  text-align: right;
-
-  font-size: 16px;
-  font-weight: 800;
-
-  color: #facc15;
+  color: var(--primary);
 }
