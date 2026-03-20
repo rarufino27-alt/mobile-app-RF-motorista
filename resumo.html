@@ -246,34 +246,41 @@ button:active {
 <script>
 
 /* TEMA */
-(function(){
+(function () {
   const tema = localStorage.getItem("gfv_theme") || "dark";
   document.body.setAttribute("data-theme", tema);
 })();
 
 /* MENU */
-function abrirMenu(){
+function abrirMenu() {
   menu.classList.add("ativo");
-  menuOverlay.style.display="block";
+  menuOverlay.style.display = "block";
 }
 
-function fecharMenu(){
+function fecharMenu() {
   menu.classList.remove("ativo");
-  menuOverlay.style.display="none";
+  menuOverlay.style.display = "none";
 }
 
-function irPara(p){
+function irPara(p) {
   window.location.href = p;
 }
 
 /* DADOS */
 const corrida = JSON.parse(localStorage.getItem("gfv_corrida"));
-if(!corrida) window.location.href = "index.html";
+if (!corrida) window.location.href = "index.html";
 
 let { origem, destino, valor } = corrida;
 
+/* ELEMENTOS */
+const pagamentoEl = document.getElementById("pagamento");
+const feiraEl = document.getElementById("feira");
+const animalEl = document.getElementById("animal");
+const saidaPraiaEl = document.getElementById("saidaPraia");
+const esperaEl = document.getElementById("espera");
+
 /* ROTA */
-function montarRota(){
+function montarRota() {
   document.getElementById("rota").innerHTML = `
     <div>📍 ${origem}</div>
     <div>🏁 ${destino}</div>
@@ -281,19 +288,20 @@ function montarRota(){
 }
 
 /* NOTURNO */
-function adicionalNoturno(base){
+function adicionalNoturno(base) {
   const agora = new Date();
   const hora = agora.getHours() + agora.getMinutes() / 60;
 
-  if(hora >= 22.5 || hora <= 5){
-    if(base <= 24.99) return 5;
+  if (hora >= 22.5 || hora <= 5) {
+    if (base <= 24.99) return 5;
     return base * 0.35;
   }
+
   return 0;
 }
 
-/* CALCULO */
-function calcular(){
+/* CALCULO FINAL */
+function calcular() {
 
   let base = parseFloat(valor) || 0;
   let total = base;
@@ -310,27 +318,27 @@ function calcular(){
 
   html += `<div class="linha"><span>Valor base</span><span>R$ ${base.toFixed(2)}</span></div>`;
 
-  if(noturno > 0){
+  if (noturno > 0) {
     html += `<div class="linha"><span>Adicional Noturno</span><span>R$ ${noturno.toFixed(2)}</span></div>`;
     total += noturno;
   }
 
-  if(feira > 0){
+  if (feira > 0) {
     html += `<div class="linha"><span>Feira</span><span>R$ ${feira.toFixed(2)}</span></div>`;
     total += feira;
   }
 
-  if(animal > 0){
+  if (animal > 0) {
     html += `<div class="linha"><span>Animal</span><span>R$ ${animal.toFixed(2)}</span></div>`;
     total += animal;
   }
 
-  if(praia > 0){
+  if (praia > 0) {
     html += `<div class="linha"><span>Saída Praia</span><span>R$ ${praia.toFixed(2)}</span></div>`;
     total += praia;
   }
 
-  if(espera > 5){
+  if (espera > 5) {
     let val = 3 + ((espera - 5) * 0.6);
     html += `<div class="linha"><span>Espera</span><span>R$ ${val.toFixed(2)}</span></div>`;
     total += val;
@@ -338,22 +346,21 @@ function calcular(){
 
   let subtotal = total;
   let totalFinal = subtotal;
-  let taxaCartao = 0;
 
   // 💳 DÉBITO
-  if(pagamento === "debito"){
+  if (pagamento === "debito") {
     totalFinal = subtotal / 0.98;
-    taxaCartao = totalFinal - subtotal;
+    let taxa = totalFinal - subtotal;
 
-    html += `<div class="linha"><span>Taxa Débito</span><span>R$ ${taxaCartao.toFixed(2)}</span></div>`;
+    html += `<div class="linha"><span>Taxa Débito</span><span>R$ ${taxa.toFixed(2)}</span></div>`;
   }
 
   // 💳 CRÉDITO
-  if(pagamento === "credito"){
+  if (pagamento === "credito") {
     totalFinal = subtotal / 0.95;
-    taxaCartao = totalFinal - subtotal;
+    let taxa = totalFinal - subtotal;
 
-    html += `<div class="linha"><span>Taxa Crédito</span><span>R$ ${taxaCartao.toFixed(2)}</span></div>`;
+    html += `<div class="linha"><span>Taxa Crédito</span><span>R$ ${taxa.toFixed(2)}</span></div>`;
   }
 
   html += `
@@ -363,68 +370,24 @@ function calcular(){
   `;
 
   document.getElementById("detalhe").innerHTML = html;
-}
-  
-// ANIMAÇÃO DO VALOR
-animarValor(total);
 
-// VIBRAÇÃO (MOBILE)
-if (navigator.vibrate) {
-navigator.vibrate(10);
-}
+  // VIBRAÇÃO (mobile)
+  if (navigator.vibrate) {
+    navigator.vibrate(10);
+  }
 }
 
-/* ELEMENTOS */
-const pagamentoEl = document.getElementById("pagamento");  
-const feiraEl = document.getElementById("feira");
-const animalEl = document.getElementById("animal");
-const saidaPraiaEl = document.getElementById("saidaPraia");
-const esperaEl = document.getElementById("espera");
-
-document.querySelectorAll("select,input").forEach(e=>{
-e.addEventListener("change", calcular);
+/* EVENTOS */
+document.querySelectorAll("select,input").forEach(e => {
+  e.addEventListener("change", calcular);
 });
 
-  function animarValor(final){
-
-  const el = document.getElementById("valorFinal");
-
-  el.classList.add("valor-animando");
-
-  setTimeout(()=>{
-    el.classList.remove("valor-animando");
-  }, 300);
-
-  let atual = parseFloat(el.innerText.replace("R$","").replace(",",".") || 0);
-
-  let passo = (final - atual) / 10;
-  let i = 0;
-
-  const intervalo = setInterval(()=>{
-    atual += passo;
-    i++;
-
-    el.innerText = "R$ " + atual.toFixed(2);
-
-    if(i >= 10){
-      el.innerText = "R$ " + final.toFixed(2);
-      clearInterval(intervalo);
-    }
-
-  }, 20);
-
-}
-  
 /* WHATSAPP */
-function solicitar(){
+function solicitar() {
 
-  const total = document.getElementById("valorFinal").innerText;
+  const texto = document.getElementById("detalhe").innerText;
 
-  const msg = `*RECIBO GFV*
-Origem: ${origem}
-Destino: ${destino}
-
-Total: ${total}`;
+  const msg = `*RECIBO GFV*\n\n${texto}`;
 
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
 }
@@ -434,6 +397,6 @@ montarRota();
 calcular();
 
 </script>
-
+  
 </body>
 </html>
