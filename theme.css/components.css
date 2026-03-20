@@ -25,17 +25,30 @@
    CARD
 ========================= */
 .card {
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(20px);
+  position: relative;
 
-  border-radius: 20px;
-  padding: 18px;
+  background: #0f0f0f;
+  border-radius: 16px;
+  padding: 16px;
 
-  border: 1px solid rgba(255, 90, 31, 0.15);
+  border: 1px solid rgba(255,255,255,0.06);
 
-  box-shadow:
-    0 20px 40px rgba(0,0,0,0.25),
-    inset 0 0 0 1px rgba(255,255,255,0.04);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* LINHA AMARELA TOP */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 60px;
+  height: 3px;
+
+  background: linear-gradient(90deg, #facc15, transparent);
+
+  border-top-left-radius: 16px;
 }
 
 /* =========================
